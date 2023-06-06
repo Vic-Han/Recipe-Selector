@@ -1,5 +1,5 @@
 import React from 'react'
-import './CSS/Register.css'
+import '../CSS/Register.css'
 
 class Register extends React.Component{
 
@@ -12,3 +12,4 @@ class Register extends React.Component{
         return(<div></div>);
     }
 }
+export default Register;

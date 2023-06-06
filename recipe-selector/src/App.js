@@ -1,7 +1,4 @@
-import logo from './logo.svg';
-import './App.css';
-import Logo from './Logo.jsx'
-import MainController from './MainController';
+import MainController from './front_end/MainController';
 function App() {
   return (
     <div className="App">

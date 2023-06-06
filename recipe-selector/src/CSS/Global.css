@@ -4,3 +4,13 @@
     --dark_orange: #E08E6D;
     --beige: #F6C391;
 }
+.horizontal_container
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.horizontal_component
+{
+    flex-basis: auto;
+}
