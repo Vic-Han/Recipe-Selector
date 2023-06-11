@@ -1,0 +1,12 @@
+@import './Global.css';
+
+#register_contents_container{
+    position: relative;
+    width : 40vw;
+    left: 30vw;
+    right: 30vw;
+    align-items: center;
+}
+.register_label{
+    margin-right: 2vw;
+}

@@ -1,0 +1,8 @@
+@import './Global.css';
+
+#login_contents{
+    position: relative;
+    left : 35vw;
+    width : 30vw;
+    right : 35vw;
+}

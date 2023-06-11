@@ -1,0 +1,7 @@
+@import './Global.css';
+
+#main_application{
+    width :88vw;
+    left : 6vw;
+    right : 6vw;
+}
