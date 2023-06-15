@@ -5,10 +5,17 @@ const NutritionSchema = new mongoose.Schema({
 })
 const IngredientSchema = new mongoose.Schema({
 
-    name: String,
+    name : String,
     nutrition_facts : NutritionSchema,
-
+    flags : [String]
 
 });
+const Nutrition
+const Ingredient = mongoose.model("Ingredient", IngredientSchema);
 
-module.exports = mongoose.model("Ingredient", IngredientSchema);
+async function getAll()
+{
+    Ingredient.find({}).then( Ingredients => {
+        return Ingredients;
+    })
+}

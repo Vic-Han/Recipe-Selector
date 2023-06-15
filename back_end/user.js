@@ -5,7 +5,7 @@ const userSchema = new mongoose.Schema({
   lastName: String,
   password: Number,
   email: String,
-  perimision: Number,
+  perimission: Number,
   favorites: [mongoose.SchemaTypes.ObjectId]
 });
 
@@ -13,7 +13,7 @@ const User = mongoose.model("User", userSchema);
 mongoose.connect('mongodb://127.0.0.1:27017/testdb');
 
 async function createUser(firstName,lastName, hashedPassword, email) {
-  const new_user = new User({ firstName,lastName, password: hashedPassword, email, perimision: 1, favorites: [] });
+  const new_user = new User({ firstName,lastName, password: hashedPassword, email, perimission: 1, favorites: [] });
   try{
     
     await new_user.save(); 
@@ -26,16 +26,23 @@ async function createUser(firstName,lastName, hashedPassword, email) {
   }
 }
 
-async function verifyUser(email, hashedPassword) {
-  const user = await User.exists({  email: email , password: hashedPassword });
-  return user;
+async function verifyUser(inputemail, hashedPassword) {
+  const user = await User.exists({  email: inputemail , password: hashedPassword });
+  console.log(user);
+  return (user !== null);
 }
 async function checkUser(email) {
     const user = await User.exists({  email: email });
-    return user;
-  }
+    return (user!== null);
+}
+// called when front end knows user exists
+async function getPermission(email) {
+    const user = await User.exists({  email: email });
+    return user.perimission;
+}
 module.exports = {
     checkUser,
     createUser,
-    verifyUser
+    verifyUser,
+    getPermission
 }

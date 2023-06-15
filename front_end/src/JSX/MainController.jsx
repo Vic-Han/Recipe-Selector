@@ -1,21 +1,34 @@
 import React from 'react';
 import '../CSS/MainController.css';
-import Logo from './Logo';
 import MainScreen from './MainScreen.jsx';
 import Login from './Login.jsx';
 import Register from './Register.jsx';
-import ProfileIcon from './ProfileIcon';
-
+import Profile from './Profile.jsx'
+import Header from './Header.jsx'
+import Favourites from './Favourites.jsx';
+import ManageScreen from './ManageScreen.jsx';
+import EditIngredient from './EditIngredient.jsx';
+import EditRecipe from './EditRecipe.jsx';
+import Info from './Info.jsx'
 class MainController extends React.Component {
     
   constructor() {
     super();
-    this.userID = -1;
+    
     this.filters = { "gluten-free": false, keto: false };
     this.state = {
       mainContents: <MainScreen searchEvent={this.search} userID={this.userID} filters={this.filters} />,
-      test : 4,
+      
     };
+    this.headerButtons = {
+      logoClick : this.showHomeScreen,
+      favouritesClick : this.showFavourites,
+      recipeClick : this.showRecipes,
+      ingredientClick : this.showIngredientsScreen,
+      manageClick : this.showManageScreen,
+      profClick : this.showProfileScreen,
+      loginClick : this.showLoginScreen,
+    }
   }
 
   componentDidMount() {}
@@ -23,19 +36,16 @@ class MainController extends React.Component {
   showLoginScreen = () => {
     this.setState({
       mainContents: <Login loginSuccessEvent={this.showHomeScreen} registerEvent={this.showRegisterScreen} />,
-      test : 5,
     });
-    console.log(this.state.test)
   }
 
-  showHomeScreen = (userID)  => {
-    this.userID = userID;
-    if(userID > 0)
-    {
-    }
+  showHomeScreen = ()  => {
+    Info.setPermission(3);
+    console.log(Info.getPermission())
     this.setState({
-      mainContents: <MainScreen searchEvent={this.search} userID={this.userID} filters={this.filters} />,
+      mainContents: <MainScreen searchEvent={this.search}  filters={this.filters} />,
     });
+
   }
 
   showRegisterScreen = () => {
@@ -43,26 +53,44 @@ class MainController extends React.Component {
         mainContents : <Register />
     });
   }
-
+  showProfileScreen = () => {
+    this.setState({
+      mainContents : <Profile/>
+    })
+  }
+  showFavourites = () => {
+    this.setState({
+      mainContents : <Favourites/>
+    })
+  }
+  showManageScreen = () => {
+    this.setState({
+    mainContents : <ManageScreen/>
+     })
+  }
+  showIngredientsScreen = () => {
+    this.setState({
+      mainContents : <EditIngredient/>
+    })
+  }
+  showRecipes = () => {
+    this.setState({
+      mainContents : <EditRecipe/>
+    })
+  }
   search(recipe_name) {
 
   }
 
   render() {
-
+    
     return (
       <div id = "main_application">
-        <div id="Header" className="horizontal_container">
-          <div className="horizontal_component">
-            <Logo clickHandler={this.showHomeScreen} />
-          </div>
-          <div className="horizontal_component">
-            <ProfileIcon userID={this.userID} loginClicked={this.showLoginScreen} />
-          </div>
-        </div>
+          <Header eventHandlers = {this.headerButtons}/>
+        
         <div id="MainContents">{this.state.mainContents}</div>
       </div>
-    );
+    )
   }
 }
 

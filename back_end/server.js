@@ -4,7 +4,7 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
-const { checkUser, createUser, verifyUser } = require('./user');
+const { checkUser, createUser, verifyUser, getPermission } = require('./user');
 
 
 const crypto = require('crypto');
@@ -57,6 +57,13 @@ app.get('/logincorrect/:email/:password/', (req,res) =>{
         res.json({error});
       });
 });
+app.get('/getpermission/:email',(req,res) => {
+    getPermission(req.params.email).then( result =>
+       { res.json({result});}
+    ).catch(error => {
+        res.json({error});
+    })
+})
 // Start the server
 app.listen(3001, () => {
   console.log('Server is running on port 3001');

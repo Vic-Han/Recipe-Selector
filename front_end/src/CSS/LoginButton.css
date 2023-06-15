@@ -1,0 +1,9 @@
+@import './Global.css';
+
+
+.login_button{
+    position: relative;
+    right: 20vw;
+    width : 10vw;
+    height: 6vh;
+}

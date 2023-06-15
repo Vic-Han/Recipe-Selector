@@ -78,6 +78,17 @@ function Register(){
   const [confirmPassword, setConfirm] = useState('');
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
+  const validPassword = () =>{
+    let passwordValid = true;
+    passwordValid |= password.length >= 8;
+    passwordValid |= password.match(/[a-z]/);
+    passwordValid |= password.match(/[A-Z]/);
+    passwordValid |= password.match(/[0-9]/);
+    return passwordValid;
+  }
+  const uniqueEmail = () => {
+        
+  }
 
   const tryRegister = () => {
     
@@ -89,10 +100,11 @@ function Register(){
         }, 3000)
         return;
     }
-      
+     
     const localPath = `http://localhost:3001`
 
-fetch(localPath+`/createuser/${email}/${password}/${firstName}/${lastName}`)
+    fetch(localPath+`/createuser/${encodeURIComponent(email)}
+    /${encodeURIComponent(password)}/${encodeURIComponent(firstName)}/${encodeURIComponent(lastName)}`)
       .then(response => response.json())
       .then(data => {
         console.log("success")
@@ -106,7 +118,7 @@ fetch(localPath+`/createuser/${email}/${password}/${firstName}/${lastName}`)
     <div id ='register_contents_container'>
 
       <h2>Register</h2>
-      <h2>{errorMessage}</h2>
+      
        <div>
           <label>First Name:</label>
           <input type="text" value={firstName} onChange={e => setFirstname(e.target.value)} />
@@ -126,10 +138,10 @@ fetch(localPath+`/createuser/${email}/${password}/${firstName}/${lastName}`)
         
         <div>
           <label>Confirm Password:</label>
-          <input type="text" value={confirmPassword} onChange={e => setConfirm(e.target.value)} />
+          <input type="password" value={confirmPassword} onChange={e => setConfirm(e.target.value)} />
         </div>
         <button onClick={tryRegister}>Register</button>
-      
+        <h2>{errorMessage}</h2>
     </div>
   );
 };

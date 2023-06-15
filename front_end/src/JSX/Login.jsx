@@ -1,58 +1,80 @@
-import React from 'react'
-import '../CSS/Login.css'
-class Login extends React.Component
-{
+import React from 'react';
+import '../CSS/Login.css';
+import Info from './Info';
+class Login extends React.Component {
+  constructor(props) {
+    super(props);
+    this.loginSuccessEvent = props.loginSuccessEvent;
+    this.registerEvent = props.registerEvent;
+    this.state = {
+      email: '',
+      password: '',
+      errorMessage : '          '
+    };
+  }
 
-    constructor(props)
-    {
-        super(props)
-        this.loginSuccessEvent = props.loginSuccessEvent
-        this.registerEvent = props.registerEvent
-        this.state = {
-            email : "",
-            password : ""
-        }
-    }
-    loginFail = () => {
-
-    }
-    loginCheck = () => {
-        let loginSuccess = false;
-        const localPath = "http://localhost:3001"
-        fetch(localPath + `/logincorrect/${this.state.email}/${this.state.password}`)
-        .then(response => response.json())
-        .then(data => {
-            loginSuccess = data
-          console.log("success")
+  loginFail = () => {
+    this.setState({
+        errorMessage: "Incorrect email or password",
+    })
+    setTimeout(()=>{
+        this.setState({
+            errorMessage: '          ',
         })
-        .catch(error => {
-          console.log(error)
-        });
-        if(loginSuccess)
-        {
-            this.loginSuccessEvent(this.state.email);
-        }
-        else{
-            
-        }
-    }
-    showRegister = () => {
-        this.registerEvent();
-    }
-    render(){
-        return(<div id = "login_contents">
-            <h2> username or email:</h2>
-            <input type = "text" maxLength={50} id = "userNameFeild"></input>
-            <h2>password:</h2>
-            <input type = "password" maxLength={50}></input>
-            <button onClick = {this.loginCheck}>login</button>
-            <div className='horizontal_container'>
-                <h3 className='horizontal_component'>don't have an account?</h3>
-                <button onClick={this.showRegister} className='horizontal_component'>Register</button>
-            </div>
-            
+    },3000)
+  };
 
-        </div>)
-    }
+  loginCheck = () => {
+    const localPath = 'http://localhost:3001';
+    fetch(`${localPath}/logincorrect/${encodeURIComponent(this.state.email)}/${encodeURIComponent(this.state.password)}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.result === true) {
+          // Login success
+          console.log(data)
+          Info.setEmail(this.state.email);
+          
+          this.loginSuccessEvent();
+        } else {
+          // Login failure
+          this.loginFail();
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  showRegister = () => {
+    this.registerEvent();
+  };
+
+  handleEmailChange = e => {
+    this.setState({ email: e.target.value });
+  };
+
+  handlePasswordChange = e => {
+    this.setState({ password: e.target.value });
+  };
+
+  render() {
+    return (
+      <div id="login_contents">
+        <h2>Username or Email:</h2>
+        <h3 >{this.state.errorMessage}</h3>
+        <input type="text" maxLength={50} value={this.state.email} onChange={this.handleEmailChange} id="userNameFeild" />
+        <h2>Password:</h2>
+        <input type="password" maxLength={50} value={this.state.password} onChange={this.handlePasswordChange} />
+        <button onClick={this.loginCheck}>Login</button>
+        <div className="horizontal_container">
+          <h3 className="horizontal_component">Don't have an account?</h3>
+          <button onClick={this.showRegister} className="horizontal_component">
+            Register
+          </button>
+        </div>
+      </div>
+    );
+  }
 }
-export default Login
+
+export default Login;
