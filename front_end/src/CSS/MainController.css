@@ -1,7 +1,9 @@
 @import './Global.css';
 
 #main_application{
+    position: relative;
     width :88vw;
     left : 6vw;
     right : 6vw;
+    top: 2vw;
 }

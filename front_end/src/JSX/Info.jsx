@@ -18,8 +18,7 @@ class Info {
       fetch(`${localPath}/getpermission/${encodeURIComponent(this.userEmail)}`)
       .then(response => response.json())
       .then(data => {
-       
-        this.setPermission(data);
+        this.setPermission(data.result);
           
 
         } 

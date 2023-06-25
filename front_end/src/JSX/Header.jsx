@@ -46,11 +46,11 @@ class Header extends React.Component
     }
     update = () =>
     {
-        let new_favourites = "sdsd";
-        let new_recipe = "sdsd";
-        let new_ingredient = "sdsd";
-        let new_manage = "sdsd";
-        let new_prof_Icon = "sds";
+        let new_favourites = "";
+        let new_recipe = "";
+        let new_ingredient = "";
+        let new_manage = "";
+        let new_prof_Icon = "";
         console.log(Info.getPermission())
         if(Info.getPermission() >= 1)
         {
@@ -79,8 +79,7 @@ class Header extends React.Component
             ingredient: new_ingredient,
             manage: new_manage,
         })
-        this.state.manage = new_manage;
-        console.log(this.state)
+       
     }
     render(){
         return(

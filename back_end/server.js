@@ -59,7 +59,12 @@ app.get('/logincorrect/:email/:password/', (req,res) =>{
 });
 app.get('/getpermission/:email',(req,res) => {
     getPermission(req.params.email).then( result =>
-       { res.json({result});}
+      
+       { 
+        //console.log(req.params.email)
+        //console.log(result)
+        res.json({result});
+      }
     ).catch(error => {
         res.json({error});
     })

@@ -40,8 +40,6 @@ class MainController extends React.Component {
   }
 
   showHomeScreen = ()  => {
-    Info.setPermission(3);
-    console.log(Info.getPermission())
     this.setState({
       mainContents: <MainScreen searchEvent={this.search}  filters={this.filters} />,
     });

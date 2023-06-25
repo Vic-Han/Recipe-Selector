@@ -17,18 +17,15 @@ async function createUser(firstName,lastName, hashedPassword, email) {
   try{
     
     await new_user.save(); 
-    console.log("database success");
     return true
     }
   catch(error){
-    console.log("database fail")
     return false;
   }
 }
 
 async function verifyUser(inputemail, hashedPassword) {
   const user = await User.exists({  email: inputemail , password: hashedPassword });
-  console.log(user);
   return (user !== null);
 }
 async function checkUser(email) {
@@ -37,7 +34,7 @@ async function checkUser(email) {
 }
 // called when front end knows user exists
 async function getPermission(email) {
-    const user = await User.exists({  email: email });
+    const user = await User.findOne({  email: email });
     return user.perimission;
 }
 module.exports = {
