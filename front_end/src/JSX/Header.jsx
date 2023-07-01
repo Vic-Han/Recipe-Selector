@@ -2,12 +2,8 @@ import React from 'react'
 import '../CSS/Header.css'
 import Info from './Info'
 import Logo from "./Header/Logo.jsx"
-import FavouritesButton from './Header/FavouritesButton.jsx'
-import ProfileIcon from './Header/ProfileIcon'
-import LoginButton from './Header/LoginButton'
-import ManageButton from './Header/ManageButton'
-import RecipeButton from './Header/RecipeButton'
-import IngredientsButton from './Header/IngredientsButton'
+import HeaderButton from './Header/HeaderButton.jsx'
+
 class Header extends React.Component
 {
     constructor(props)
@@ -37,7 +33,7 @@ class Header extends React.Component
     {
         this.setState({
             logo: <Logo clickHandler = {this.logoClick}/>,
-            prof_Icon : <LoginButton clickHandler = {this.loginClick}/>,
+            prof_Icon : <HeaderButton clickHandler = {this.loginClick} text = "Login"/>,
             favourites: null,
             recipe: null,
             ingredient: null,
@@ -54,20 +50,20 @@ class Header extends React.Component
         console.log(Info.getPermission())
         if(Info.getPermission() >= 1)
         {
-            new_favourites = <FavouritesButton clickHandler = {this.favouritesClick}/>
-            new_prof_Icon = <ProfileIcon clickHandler = {this.profClick}/>
+            new_favourites = <HeaderButton clickHandler = {this.favouritesClick} text = "Favourites"/>
+            new_prof_Icon = <HeaderButton clickHandler = {this.profClick} text = "Profile"/>
         }
         else{
-            new_prof_Icon = <LoginButton clickHandler = {this.loginClick}/>
+            new_prof_Icon = <HeaderButton clickHandler = {this.loginClick} text = "Login"/>
         }
         if(Info.getPermission() >= 2)
         {
-            new_recipe = <RecipeButton clickHandler = {this.recipeClick}/>
+            new_recipe = <HeaderButton clickHandler = {this.recipeClick} text = "Add Recipe"/>
         }
         if(Info.getPermission() >= 3)
         {
-            new_ingredient = <IngredientsButton clickHandler = {this.ingredientClick}/>
-            new_manage = <ManageButton clickHandler = {this.manageClick}/>
+            new_ingredient = <HeaderButton clickHandler = {this.ingredientClick} text = "Edit Ingredients"/>
+            new_manage = <HeaderButton clickHandler = {this.manageClick} text = "Manage Users"/>
             console.log(new_manage)
         }
         console.log(this.state)

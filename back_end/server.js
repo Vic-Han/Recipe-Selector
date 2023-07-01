@@ -5,7 +5,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 const { checkUser, createUser, verifyUser, getPermission } = require('./user');
-
+const { getAllIngredients, newIngredient, deleteIngredient} = require('./ingredient');
 
 const crypto = require('crypto');
 
@@ -24,13 +24,7 @@ function hashStringToInt(string) {
 
   return hashInt;
 }
-// Define a route for adding two numbers
-app.get('/add/:num1/:num2', (req, res) => {
-  const num1 = parseInt(req.params.num1);
-  const num2 = parseInt(req.params.num2);
-  const sum = num1 + num2;
-  res.json({ sum });
-});
+
 app.get('/createuser/:email/:password/:firstName/:lastName', (req,res) =>{
     const hashedPassword = hashStringToInt(req.params.password);
     createUser(req.params.firstName,req.params.lastName, hashedPassword, req.params.email).then(result => {
@@ -68,6 +62,24 @@ app.get('/getpermission/:email',(req,res) => {
     ).catch(error => {
         res.json({error});
     })
+})
+app.get('/getallingredients/', (req, res) => {
+  getAllIngredients()
+    .then((result) => {
+      res.json({ result });
+    })
+    .catch((error) => {
+      res.json({ error });
+    });
+});
+
+app.get('/newingredient' , (req, res) => {
+  console.log("yay")
+  newIngredient(req.query.name, JSON.parse(req.query.nutrition), JSON.parse(req.query.flags))
+})
+app.get('deleteingredient/:mongoID/', (req,res) => {
+  console.log("Hi")
+  deleteIngredient(req.mongoID)
 })
 // Start the server
 app.listen(3001, () => {

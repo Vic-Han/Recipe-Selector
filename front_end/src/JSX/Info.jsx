@@ -3,12 +3,9 @@ class Info {
       this.userEmail = ""
       this.permission = 0
       this.observers = []
+      this.dietary_flags = ["vegan"]
     }
   
-    // Define your methods and properties
-    // ...
-  
-    // Example method
     getEmail() {
       return this.userEmail;
     }
@@ -36,9 +33,17 @@ class Info {
       this.permission = newPermission;
       this.observers.forEach(observer => {observer()})
     }
-    addObserver(object)
+    addObserver(func)
     {
-      this.observers.push(object);
+      this.observers.push(func);
+    }
+    flagMap(){
+      let map = {};
+      this.dietary_flags.forEach(item => {map[item] = false})
+      return map;
+    }
+    flagArray(){
+      return this.dietary_flags
     }
   }
   

@@ -1,0 +1,6 @@
+@import './Global.css';
+
+.header_button{
+    font-weight: normal;
+    cursor: pointer;
+}

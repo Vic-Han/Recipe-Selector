@@ -4,7 +4,9 @@ const NutritionSchema = new mongoose.Schema({
     calories: Number,
     fats : Number,
     protein : Number,
-    carbs : Number
+    carbs : Number,
+    weightServing : Number,
+    volumeServing : Number,
 })
 const IngredientSchema = new mongoose.Schema({
 
@@ -16,35 +18,36 @@ const IngredientSchema = new mongoose.Schema({
 const Nutrition = mongoose.model("Nutrition", NutritionSchema);
 const Ingredient = mongoose.model("Ingredient", IngredientSchema);
 
-async function getAll()
+async function getAllIngredients()
 {
-    Ingredient.find({}).then( Ingredients => {
-        return Ingredients;
-    })
+    const Ingredients = await Ingredient.find({})
+    return Ingredients;
 }
-async function new_Ingredient(name, nutrition, flags){
+async function newIngredient(name, input_nutrition, flags){
     const nutrition = await new Nutrition({
-        calories: nutrition.calories, 
-        fats: nutrition.fats,
-        protein: nutriton.protein,
-        carbs: nutrition.carbs
+        calories: input_nutrition.calories, 
+        fats: input_nutrition.fats,
+        protein: input_nutrition.protein,
+        carbs: input_nutrition.carbs,
+        weightServing : input_nutrition.weightServing,
+        volumeServing : input_nutrition.volumeServing,
     });
     const ingredient = await  new Ingredient ({name, nutrition_facts : nutrition, flags})
     try{
-    
         await ingredient.save(); 
-        console.log("database success");
         return true
         }
       catch(error){
-        console.log("database fail")
         return false;
       }
 }
-async function delete_Ingredient(){
-
+async function deleteIngredient(mongoID){
+    await Ingredient.findByIdAndRemove(mongoID)
 }
 module.exports = {
-    getAll,
-    new_Ingredient,
+    Nutrition,
+    Ingredient,
+    getAllIngredients,
+    newIngredient,
+    deleteIngredient
 }

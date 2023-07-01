@@ -1,13 +1,17 @@
-const Mongoose = require('mongoose');
-const User = require("./user");
+const { Ingredient } = require ("./ingredient");
 
-const localPath = `http://localhost:3001`
-
-fetch(localPath+`/createuser/${"sdfsdf"}/${"sdf"}/${"kjsdhakjshdakj"}/${"23df2"}`)
-      .then(response => response.json())
-      .then(data => {
-        console.log("success")
-      })
-      .catch(error => {
-        console.log("fail")
-      });
+Ingredient.findOne().exec()
+.then(igr => {
+  const localPath = 'http://localhost:3001';
+  const id = igr._id;
+  fetch(`${localPath}/deleteingredient/${encodeURIComponent(id)}`)
+    .then(response => {
+      console.log(response);
+    })
+    .catch(error => {
+      console.log(error);
+    });
+})
+.catch(error => {
+  console.log(error);
+});
