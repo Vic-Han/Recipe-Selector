@@ -10,6 +10,10 @@ class Info {
       return this.userEmail;
     }
     setEmail(newEmail){
+      if(newEmail === ""){
+        this.userEmail = "";
+        return;
+      }
       this.userEmail = newEmail;
       const localPath = 'http://localhost:3001';
       fetch(`${localPath}/getpermission/${encodeURIComponent(this.userEmail)}`)

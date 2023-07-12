@@ -1,17 +1,8 @@
-const { Ingredient } = require ("./ingredient");
+const express = require('express');
+const app = express();
+const path = require('path')
+app.use(express.static(__dirname + '/public'))
 
-Ingredient.findOne().exec()
-.then(igr => {
-  const localPath = 'http://localhost:3001';
-  const id = igr._id;
-  fetch(`${localPath}/deleteingredient/${encodeURIComponent(id)}`)
-    .then(response => {
-      console.log(response);
-    })
-    .catch(error => {
-      console.log(error);
-    });
-})
-.catch(error => {
-  console.log(error);
+app.listen(3001, () => {
+  console.log('Server is running on port 3000');
 });

@@ -3,7 +3,7 @@ import '../CSS/Header.css'
 import Info from './Info'
 import Logo from "./Header/Logo.jsx"
 import HeaderButton from './Header/HeaderButton.jsx'
-
+import ProfileIcon from './Header/ProfileIcon'
 class Header extends React.Component
 {
     constructor(props)
@@ -47,11 +47,11 @@ class Header extends React.Component
         let new_ingredient = "";
         let new_manage = "";
         let new_prof_Icon = "";
-        console.log(Info.getPermission())
+
         if(Info.getPermission() >= 1)
         {
             new_favourites = <HeaderButton clickHandler = {this.favouritesClick} text = "Favourites"/>
-            new_prof_Icon = <HeaderButton clickHandler = {this.profClick} text = "Profile"/>
+            new_prof_Icon = <ProfileIcon clickHandler = {this.profClick}/>
         }
         else{
             new_prof_Icon = <HeaderButton clickHandler = {this.loginClick} text = "Login"/>
@@ -66,7 +66,6 @@ class Header extends React.Component
             new_manage = <HeaderButton clickHandler = {this.manageClick} text = "Manage Users"/>
             console.log(new_manage)
         }
-        console.log(this.state)
         this.setState ( {
             logo: <Logo clickHandler = {this.logoClick}/>,
             prof_Icon : new_prof_Icon,
@@ -80,22 +79,22 @@ class Header extends React.Component
     render(){
         return(
             <div className='horizontal_container' id = 'Header'>
-                <div className='horizontal_component'>
+                <div className='horizontal_component header_component'>
                     {this.state.logo}
                 </div>
-                <div className='horizontal_component'>
+                <div className='horizontal_component header_component'>
                     {this.state.favourites}
                 </div>
-                <div className='horizontal_component'>
+                <div className='horizontal_component header_component'>
                     {this.state.recipe}
                 </div>
-                <div className='horizontal_component'>
+                <div className='horizontal_component header_component'>
                     {this.state.ingredient}
                 </div>
-                <div className='horizontal_component'>
+                <div className='horizontal_component header_component'>
                     {this.state.manage}
                 </div>
-                <div className='horizontal_component'>
+                <div className='horizontal_component header_component'>
                     {this.state.prof_Icon}
                 </div>
             </div>

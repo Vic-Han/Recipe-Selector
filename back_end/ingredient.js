@@ -12,7 +12,8 @@ const IngredientSchema = new mongoose.Schema({
 
     name : String,
     nutrition_facts : NutritionSchema,
-    flags : [String]
+    flags : [String],
+    imagePath: String,
 
 });
 const Nutrition = mongoose.model("Nutrition", NutritionSchema);
@@ -47,6 +48,8 @@ async function deleteIngredient(mongoID){
 module.exports = {
     Nutrition,
     Ingredient,
+    IngredientSchema,
+    NutritionSchema,
     getAllIngredients,
     newIngredient,
     deleteIngredient

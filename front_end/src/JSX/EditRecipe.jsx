@@ -3,7 +3,7 @@ import '../CSS/EditRecipe.css'
 class EditRecipe extends React.Component{
     constructor(props)
     {
-        super()
+        super(props)
     }
     render(){
         return(

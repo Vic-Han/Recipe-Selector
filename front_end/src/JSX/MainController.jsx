@@ -10,6 +10,8 @@ import ManageScreen from './ManageScreen.jsx';
 import EditIngredient from './EditIngredient.jsx';
 import EditRecipe from './EditRecipe.jsx';
 import Info from './Info.jsx'
+import UploadImage from './UploadImage';
+
 class MainController extends React.Component {
     
   constructor() {
@@ -48,7 +50,7 @@ class MainController extends React.Component {
 
   showRegisterScreen = () => {
     this.setState({
-        mainContents : <Register />
+        mainContents : <Register finishRegister = {this.showHomeScreen}/>
     });
   }
   showProfileScreen = () => {

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../../CSS/IngredientPopup.css'
 import Info from '../Info'
-
+import UploadImage from '../UploadImage';
 function IngredientPopup(props)
 {
     const new_ingredient = (props.ingredient === null);

@@ -6,18 +6,18 @@ const userSchema = new mongoose.Schema({
   password: Number,
   email: String,
   perimission: Number,
-  favorites: [mongoose.SchemaTypes.ObjectId]
+  favorites: [mongoose.SchemaTypes.ObjectId],
+  imagePath: String,
 });
 
 const User = mongoose.model("User", userSchema);
 mongoose.connect('mongodb://127.0.0.1:27017/testdb');
 
 async function createUser(firstName,lastName, hashedPassword, email) {
-  const new_user = new User({ firstName,lastName, password: hashedPassword, email, perimission: 1, favorites: [] });
+  const new_user = new User({ firstName,lastName, password: hashedPassword, email, perimission: 1, favorites: [],imagePath: "images/users/default.png" });
   try{
-    
     await new_user.save(); 
-    return true
+    return new_user._id;
     }
   catch(error){
     return false;
@@ -37,9 +37,15 @@ async function getPermission(email) {
     const user = await User.findOne({  email: email });
     return user.perimission;
 }
+async function getImage(email){
+  const user = await User.findOne({  email: email });
+  return user.imagePath;
+}
 module.exports = {
+    User,
     checkUser,
     createUser,
     verifyUser,
-    getPermission
+    getPermission,
+    getImage,
 }

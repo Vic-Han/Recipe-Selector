@@ -1,16 +1,19 @@
 const mongoose = require("mongoose");
-const [Ingredient,Nutrition] = require('./ingredient.js')
+const {Ingredient,IngredientSchema,Nutrition,NutritionSchema} = require('./ingredient')
 const IngrPairSchema = new mongoose.Schema({
-    ingr: Ingredient,
+    ingr: IngredientSchema,
     weight: Number,
     volume: Number,
-    serving: Number
+    serving: Number,
+    nutrition: NutritionSchema,
 })
 const RecipeSchema = new mongoose.Schema({
     name: String,
     ingredients: [IngrPairSchema],
     instructions: [String],
-    nutrition_facts: Nutrition
+    nutrition_facts: NutritionSchema,
+    flags: [String],
+    imagepath : String
 })
 
 const IngrPair = mongoose.model("IngrPair", IngrPairSchema)
@@ -29,6 +32,24 @@ async function makeIngrPair(mongoID, quantity)
        return new IngrPair({ingr: i, serving: quantity.number})
     }
 }
-async function newRecipe(name, ingredients, instructions){
+async function newRecipe(name, ingredients, instructions, path){
 
+    let ingredient_list = []
+    ingredients.foreach(ingredient => {
+        ingredient_list.push(makeIngrPair(ingredient.id, ingredient.quanity))
+    })
+    const new_recipe = new Recipe({name,ingredients: ingredient_list,instructions, picture_path: path});
+    await new_recipe.save();
+}
+async function deleteRecipe(mongoID){
+    const recipe = await Recipe.findById(mongoID)
+    const path = recipe.picture_path;
+    await recipe.delete()
+    return path;
+}
+
+module.exports = {
+    Recipe,
+    newRecipe,
+    deleteRecipe,
 }

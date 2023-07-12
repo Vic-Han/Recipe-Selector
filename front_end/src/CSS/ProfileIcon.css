@@ -1,1 +1,7 @@
 @import './Global.css';
+
+
+#profile_icon{
+    width: 60%;
+    height: 60%;
+}
