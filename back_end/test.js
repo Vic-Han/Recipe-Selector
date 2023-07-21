@@ -1,8 +1,5 @@
-const express = require('express');
-const app = express();
-const path = require('path')
-app.use(express.static(__dirname + '/public'))
+const {Ingredient,getAllIngredients} = require('./ingredient')
 
-app.listen(3001, () => {
-  console.log('Server is running on port 3000');
-});
+getAllIngredients().then(ingr => console.log(ingr))
+
+//Ingredient.findById('64b4b21f0e8559739a0c7980').then(ingr => {console.log(ingr)})

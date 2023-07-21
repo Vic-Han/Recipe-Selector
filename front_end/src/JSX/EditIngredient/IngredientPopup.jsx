@@ -2,10 +2,14 @@ import React, { useState } from 'react';
 import '../../CSS/IngredientPopup.css'
 import Info from '../Info'
 import UploadImage from '../UploadImage';
+import axios from 'axios';
 function IngredientPopup(props)
 {
+    
+    const localPath = 'http://localhost:3001/';
     const new_ingredient = (props.ingredient === null);
-    const id = !new_ingredient ? props.ingredient._id : null
+    let id = !new_ingredient ? props.ingredient._id : null
+    const imagePath = new_ingredient ? localPath + "images/ingredients/default.png" : (localPath) + (props.ingredient.imagePath)
     const [name, changeName] = useState(!new_ingredient ? props.ingredient.name : null);
     const [calories, changeCalories] = useState(!new_ingredient ? props.ingredient.nutrition_facts.calories : null);
     const [carbs, changeCarbs] = useState(!new_ingredient ? props.ingredient.nutrition_facts.carbs : null);
@@ -13,39 +17,44 @@ function IngredientPopup(props)
     const [protein, changeProtein] = useState(!new_ingredient ? props.ingredient.nutrition_facts.protein : null);
     const [volume, changeVol] = useState(!new_ingredient ? props.ingredient.nutrition_facts.volumeServing : null);
     const [weight, changeWeight] = useState(!new_ingredient ? props.ingredient.nutrition_facts.weightServing : null);
-    const [flags, setFlags] = useState([]);
+    const [flags, setFlags] = useState(!new_ingredient ? props.ingredient.flags: []);
+    const [imageFile, setImage] = useState(null);
     const parentClose = props.closePopup;
     const closePopup = () => {
        parentClose()
     }
-    const deleteIngredient = () =>{
-        const localPath = 'http://localhost:3001';
-        fetch(`${localPath}/deleteingredient/${encodeURIComponent(id)}`)
+    const deleteIngredient = () =>{       
+        fetch(`${localPath}deleteingredient/${encodeURIComponent(id)}`)
     }
-    const saveIngredient = () =>{
-        const localPath = 'http://localhost:3001';
-        fetch(`${localPath}/saveingredient/`,
+    const saveIngredient = async() =>{
+        const nutrition_facts = 
         {
-            method:'POST',
-        })
-      .then(response => response.json())
-      .then(data => {
-        if (data.result === true) {
-          // Login success
-          console.log(data)
-          Info.setEmail(this.state.email);
-          
-          this.loginSuccessEvent();
-        } else {
-          // Login failure
-          this.loginFail();
+            calories : calories,
+            fats : fats,
+            protein: protein,
+            carbs : carbs,
+            volumeServing : volume,
+            weightServing : weight
         }
-      })
-      .catch(error => {
-        console.log(error);
-      });
+        const params = {
+            id: encodeURIComponent(id),
+            name : encodeURIComponent(name),
+            nutrition : encodeURIComponent(JSON.stringify(nutrition_facts)),
+            flags : encodeURIComponent(JSON.stringify(flags)),
+        }
+        const queryParams = Object.entries(params)
+        .map(([key, value]) => `${key}=${value}`)
+        .join('&');
+        const response = await fetch(`${localPath}editingredient?${queryParams}`)
+        response.json(); 
+        if(imageFile !== null){
+            const formData = new FormData();
+            formData.append('image', imageFile);
+            formData.append('id', id)
+            await axios.post(localPath+'uploadingrimage', formData)
+        }
     }
-    const newIngredient = () => {
+    const newIngredient = async() => {
         
     const nutrition_facts = 
         {
@@ -56,23 +65,24 @@ function IngredientPopup(props)
             volumeServing : volume,
             weightServing : weight
         }
-        const localPath = 'http://localhost:3001';
         const params = {
-        name : encodeURIComponent(name),
-        nutrition : encodeURIComponent(JSON.stringify(nutrition_facts)),
-        flags : encodeURIComponent(JSON.stringify(flags)),
+            name : encodeURIComponent(name),
+            nutrition : encodeURIComponent(JSON.stringify(nutrition_facts)),
+            flags : encodeURIComponent(JSON.stringify(flags)),
         }
         const queryParams = Object.entries(params)
         .map(([key, value]) => `${key}=${value}`)
         .join('&');
-
-        fetch(`${localPath}/newingredient?${queryParams}`)
-        .then(response => {
-            console.log(response)
-        })
-        .catch(error => {
-            console.log(error)
-        });
+    
+        const response = await fetch(`${localPath}newingredient?${queryParams}`)
+        const result = await response.json()
+        id = result;
+        if(imageFile !== null){
+            const formData = new FormData();
+            formData.append('image', imageFile);
+            formData.append('id', id)
+            await axios.post(localPath+'uploadingrimage', formData)
+        }
     }
     const handleOverlayClick = (event) => {
         // Check if the click event originated from the overlay element
@@ -93,7 +103,7 @@ function IngredientPopup(props)
         }
     }
     const trySave = () => {
-        if(name === null || calories === null || carbs === null || protein === null || volume === null || weight === null){
+        if(name === null || calories === null || carbs === null || protein === null || (volume === null && weight === null)){
             return;
         }
         if(id === null){
@@ -137,10 +147,12 @@ function IngredientPopup(props)
                     <div className='horizontal_component'>
                         <label> Serving Size: </label>
                         <input type="number" value={volume} min = {0} onChange={e => changeVol(e.target.value)} />
+                        <label>Grams</label>
                     </div>
                     <div className='horizontal_component'>
                         <label> Serving Size: </label>
                         <input type="number" value={weight} min = {0} onChange={e => changeWeight(e.target.value)} />
+                        <label> ML </label>
                     </div>
                 </div>
                 <div> 
@@ -159,6 +171,9 @@ function IngredientPopup(props)
                     </div>
                      ))}
                 </div>
+                <div className='upload_ingredient_image'>
+                <UploadImage saveEvent = {setImage} image = { imagePath}/>
+                </div>
                 <div className='horizontal_container'>
                     <button onClick={() => {closePopup(); deleteIngredient()} }>Delete</button>
                     <button onClick={trySave}>Save</button>
@@ -172,5 +187,5 @@ function IngredientPopup(props)
    
     )
 }
-
+//image = {(localPath) + (props.ingredient.imagePath)}
 export default IngredientPopup

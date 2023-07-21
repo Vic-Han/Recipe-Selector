@@ -26,12 +26,11 @@ class Login extends React.Component {
 
   loginCheck = () => {
     const localPath = 'http://localhost:3001';
-    fetch(`${localPath}/logincorrect/${encodeURIComponent(this.state.email)}/${encodeURIComponent(this.state.password)}`)
+    fetch(`${localPath}/logincorrect/${encodeURIComponent(this.state.email.trim())}/${encodeURIComponent(this.state.password.trim())}`)
       .then(response => response.json())
       .then(data => {
         if (data.result === true) {
           // Login success
-          console.log(data)
           Info.setEmail(this.state.email);
           
           this.loginSuccessEvent();

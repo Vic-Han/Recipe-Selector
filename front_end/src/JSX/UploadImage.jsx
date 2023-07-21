@@ -4,8 +4,8 @@ function UploadImage(props) {
   const [selectedImage, setSelectedImage] = useState(null);
   const fileInputRef = useRef(null);
   const saveEvent = props.saveEvent
-  
-
+  const defaultImage = (props.image === null) 
+  ? ("http://localhost:3001/images/general/default.png") : (props.image);
   const handleAreaClick = () => {
     fileInputRef.current.click();
   };
@@ -29,10 +29,7 @@ function UploadImage(props) {
   return (
     <div className= "upload_image">
         <div className='image_space'>
-      {selectedImage ? 
-      ( <img src={selectedImage} alt="Selected" className="preview-image" />) : 
-      (<span>Drop the image here</span>)
-      }
+       <img src={selectedImage ? (selectedImage):(defaultImage)} alt="Selected" className="preview_image" />
       </div>
       <button onClick={handleAreaClick}> Upload image
       <input type="file" ref={fileInputRef} onChange={handleFileInputChange} style={{ display: 'none' }} />

@@ -17,8 +17,8 @@ class Header extends React.Component
         this.profClick = props.eventHandlers.profClick;
         this.loginClick = props.eventHandlers.loginClick;
         this.state = {
-            logo: null,
-            favourites: null,
+            logo: <Logo clickHandler = {this.logoClick}/>,
+            favourites: ((Info.permission > 0) ? (<HeaderButton clickHandler = {this.favouritesClick} text = "Favourites"/>): null),
             recipe: null,
             ingredient: null,
             manage: null,
@@ -42,6 +42,7 @@ class Header extends React.Component
     }
     update = () =>
     {
+        console.log(Info.getPermission())
         let new_favourites = "";
         let new_recipe = "";
         let new_ingredient = "";
@@ -64,7 +65,6 @@ class Header extends React.Component
         {
             new_ingredient = <HeaderButton clickHandler = {this.ingredientClick} text = "Edit Ingredients"/>
             new_manage = <HeaderButton clickHandler = {this.manageClick} text = "Manage Users"/>
-            console.log(new_manage)
         }
         this.setState ( {
             logo: <Logo clickHandler = {this.logoClick}/>,

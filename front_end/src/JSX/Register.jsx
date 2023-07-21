@@ -15,8 +15,6 @@ function Register(props){
   const [confirmPassword, setConfirm] = useState('');
   const [infoScreen, setScreen] = useState(true);
   const [imageFile, changeImage] = useState(null)
-  const [result, setResult] = useState(null);
-  const [error, setError] = useState(null);
   const finishRegister = props.finishRegister;
   const validPassword = () =>{
     let passwordValid = false;
@@ -30,7 +28,7 @@ function Register(props){
       setMessage("Password should be at least 8 characters long, with an uppercase, lowercase, and special character")
         setTimeout(() =>{
             setMessage("")
-        }, 3000)
+        }, 5000)
     }
     return passwordValid;
   }
@@ -38,15 +36,18 @@ function Register(props){
     try {
       const response = await fetch(localPath + `/userexists/${encodeURIComponent(email)}/`);
       const data = await response.json();
-  
       if (data === true) {
         setMessage("Email already in use");
         setTimeout(() => {
           setMessage("");
-        }, 3000);
+        }, 5000);
+        return false
       }
-  
-      return !data;
+      else{
+        return true;
+      }
+      
+
     } catch (error) {
       console.log(error);
       return false;
@@ -61,20 +62,28 @@ function Register(props){
        setMessage("Passwords don't match")
         setTimeout(() =>{
             setMessage("")
-        }, 3000)
+        }, 5000)
+    
         return false;
     }
     return true;
   }
-  const nextScreen = () => {
-    if(validPassword() && uniqueEmail() && passwordMatch()){
+  const nextScreen = async() => {
+    const unique_email = await uniqueEmail()
+   
+    if(validPassword() && unique_email && passwordMatch()){
       setScreen(false)
     }
   }
   const register_user = async() => {
     const formData = new FormData();
     let mongoID = null
-    
+    console.log({
+      realemail: email,
+      sentemail: encodeURIComponent(email),
+      password: password,
+      firstName : firstName,
+    })
     await fetch(localPath+`/createuser/${encodeURIComponent(email)}
     /${encodeURIComponent(password)}/${encodeURIComponent(firstName)}/${encodeURIComponent(lastName)}`)
       .then(response => response.json())
@@ -82,14 +91,15 @@ function Register(props){
         mongoID = data.toString()
       })
       .catch(error => {
-        console.log("fail")
+        console.log(error)
       });
-      console.log(imageFile);
+      if(imageFile !== null){
       formData.append('image', imageFile);
       formData.append('id', mongoID)
       await axios.post(localPath+'/uploaduserimage', formData)
+      }
       Info.setEmail(email);
-      console.log(finishRegister)
+      console.log(email)
       finishRegister();
   };
 
@@ -122,7 +132,7 @@ function Register(props){
           <button onClick={nextScreen}> Next </button>
           <h2>{errorMessage}</h2>
         </div>) 
-        : (<div>
+        : (<div className='register_image_upload'>
           
           <UploadImage saveEvent = {changeImage}/>
           <div className='horizontal_container'>

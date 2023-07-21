@@ -55,7 +55,7 @@ class MainController extends React.Component {
   }
   showProfileScreen = () => {
     this.setState({
-      mainContents : <Profile/>
+      mainContents : <Profile logoutEvent = {this.showHomeScreen}/>
     })
   }
   showFavourites = () => {

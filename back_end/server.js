@@ -1,18 +1,20 @@
 const express = require('express');
 const cors = require("cors");
 const app = express();
-
+const fs = require("fs")
 const path = require("path")
 app.use(express.json());
 app.use(cors());
 
 const multer = require('multer');
 const { User, checkUser, createUser, verifyUser, getPermission,getImage } = require('./user');
-const { getAllIngredients, newIngredient, deleteIngredient, Ingredient} = require('./ingredient');
+const { getAllIngredients, newIngredient,editIngredient, deleteIngredient, Ingredient} = require('./ingredient');
 const {Recipe,} = require('./recipe')
 app.use(express.static(__dirname + '/public'))
 // Multer configuration
 let userImageName = null;
+let ingrImageName = null;
+let recipeImageName = null;
 const userstorage = multer.diskStorage({
   destination: (req, file, cb) => {
     const directoryPath = 'public/images/users'
@@ -31,6 +33,9 @@ const uploaduserimage = multer({ storage: userstorage });
 app.post('/uploaduserimage', uploaduserimage.single('image'), (req, res) => {
     User.findById(req.body.id).then(user => {
       if (user) {
+        if(user.imagePath !== "images/users/default.png"){
+          fs.unlink(user.imagePath);
+        }
         user.imagePath = `images/users/${userImageName}`;
         user.save();
       }
@@ -38,7 +43,59 @@ app.post('/uploaduserimage', uploaduserimage.single('image'), (req, res) => {
   res.json({ message: 'File uploaded successfully' });
 });
 
+const ingrstorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const directoryPath = 'public/images/ingredients'
+    cb(null, directoryPath);
+  },
+  filename: (req, file, cb) => {
+    const unique_name = Date.now().toString() + path.extname(file.originalname);
+    ingrImageName = unique_name;
+    cb(null, unique_name);
+  },
+});
 
+const uploadingrimage = multer({ storage: ingrstorage });
+
+// Route for handling file upload
+app.post('/uploadingrimage', uploadingrimage.single('image'), (req, res) => {
+    Ingredient.findById(req.body.id).then(ingr => {
+      if (ingr) {
+        if(ingr.imagePath !== "images/ingredients/default.png"){
+          fs.unlink(ingr.imagePath);
+        }
+        ingr.imagePath = `images/ingredients/${ingrImageName}`;
+        ingr.save();
+      }
+    });
+  res.json({ message: 'File uploaded successfully' });
+});
+
+const recipestorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const directoryPath = 'public/images/recipes'
+    cb(null, directoryPath);
+  },
+  filename: (req, file, cb) => {
+    const unique_name = Date.now().toString() + path.extname(file.originalname);
+    recipeImageName = unique_name;
+    cb(null, unique_name);
+  },
+});
+
+const uploadrecipeimage = multer({ storage: recipestorage });
+
+// Route for handling file upload
+app.post('/uploadrecipeimage', uploadrecipeimage.single('image'), (req, res) => {
+    Recipe.findById(req.body.id).then(recipe => {
+      if (recipe) {
+        
+        recipe.imagePath = `images/recipes/${recipeImageName}`;
+        recipe.save();
+      }
+    });
+  res.json({ message: 'File uploaded successfully' });
+});
 
 const crypto = require('crypto');
 const { newRecipe } = require('./recipe');
@@ -60,12 +117,12 @@ function hashStringToInt(string) {
 }
 
 app.get('/createuser/:email/:password/:firstName/:lastName', (req,res) =>{
-    const hashedPassword = hashStringToInt(req.params.password);
-    createUser(req.params.firstName,req.params.lastName, hashedPassword, req.params.email).then(result => {
-    res.json(result); // true or false
+    const hashedPassword = hashStringToInt(req.params.password.trim());
+    createUser(req.params.firstName.trim(),req.params.lastName.trim(), hashedPassword, req.params.email.trim()).then(result => {
+    res.json(result); // objectID
   })
   .catch(error => {
-    res.json({error});
+    res.json(error);
   });
 });
 app.get('/userexists/:email/', (req,res) => {
@@ -111,8 +168,13 @@ app.get('/getallingredients/', (req, res) => {
 
 app.get('/newingredient' , (req, res) => {
   newIngredient(req.query.name, JSON.parse(req.query.nutrition), JSON.parse(req.query.flags))
+  .then(result => {
+    res.json(result)
+  }).catch(error =>{res.json(error)})
 })
-
+app.get('/editingredient',(req,res) =>{
+  editIngredient(req.query.id, req.query.name, JSON.parse(req.query.nutrition), JSON.parse(req.query.flags))
+})
 app.get('/deleteingredient/:mongoID', (req,res) =>{
   
   deleteIngredient(req.params.mongoID)

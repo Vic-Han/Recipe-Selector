@@ -2,7 +2,7 @@ import React from 'react';
 import '../CSS/EditIngredient.css';
 import IngredientIcon from './EditIngredient/IngredientIcon';
 import IngredientPopup from './EditIngredient/IngredientPopup';
-
+import Info from './Info'
 class EditIngredient extends React.Component {
   constructor(props) {
     super(props);
@@ -27,12 +27,10 @@ class EditIngredient extends React.Component {
   };
 
   getAllIngredients() {
-    const localPath = 'http://localhost:3001';
-    console.log("Trying");
-    fetch(`${localPath}/getallingredients/`)
+    const localPath = 'http://localhost:3001/';
+    fetch(`${localPath}getallingredients/`)
       .then(response => response.json())
-      .then(data => {
-        console.log(data.result);
+      .then(data => {     
         this.setState({
           ingredientList: data.result
         });
@@ -41,10 +39,10 @@ class EditIngredient extends React.Component {
         console.log(error);
       });
   }
-  deleteIngredient = (ingr) => {
+  deleteIngredient = (ingrID) => {
 
   }
-  addIngrdient = (ingr) =>{
+  addIngrdient = (ingrID) =>{
 
   }
   filter = (prefix) => {
@@ -61,7 +59,7 @@ class EditIngredient extends React.Component {
         </div>
         <div className='ingredient_container'>
           {this.state.ingredientList.map((item, index) => (
-            <div className='ingredient_icon' key={index}>
+            <div className='ingredient_icon_container' key={index}>
               <IngredientIcon clickHandler={() => this.openPopUp(item)} ingredient={item} />
             </div>
           ))}

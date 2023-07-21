@@ -1,1 +1,17 @@
 @import './Global.css';
+
+
+.ingredient_icon{
+    border: 0.1vw solid #000000;
+    border-color: #000000; /* Set border width and color */
+    border-radius: 4%;
+    align-items: center;
+}
+.ingredient_image{
+    
+    width: 50%;
+    position: relative;
+    left: 25%;
+    aspect-ratio: 1/1;
+    
+}

@@ -1,15 +1,17 @@
 @import './Global.css';
 
 .ingredient_container{
+    margin-top: 2vh;
     display: grid;
-    grid-template-columns: 16% 16% 16% 16% 16%;
+    grid-template-columns: 22% 22% 22% 22%;
 }
-.ingredient_icon{
+.ingredient_icon_container{
     margin-left: 30%;
+    margin-bottom: 30%;
 }
 #edit_ingredient_header{
     position: relative;
-    left: 35%;
+    left: 15%;
     width: 30%;
 }
 .edit_ingredient{

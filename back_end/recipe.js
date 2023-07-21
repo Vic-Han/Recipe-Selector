@@ -38,7 +38,7 @@ async function newRecipe(name, ingredients, instructions, path){
     ingredients.foreach(ingredient => {
         ingredient_list.push(makeIngrPair(ingredient.id, ingredient.quanity))
     })
-    const new_recipe = new Recipe({name,ingredients: ingredient_list,instructions, picture_path: path});
+    const new_recipe = new Recipe({name,ingredients: ingredient_list,instructions, imagepath: "images/recipes/default.png"});
     await new_recipe.save();
 }
 async function deleteRecipe(mongoID){
@@ -47,7 +47,9 @@ async function deleteRecipe(mongoID){
     await recipe.delete()
     return path;
 }
-
+async function computeNutrition(mongoID){
+    
+}
 module.exports = {
     Recipe,
     newRecipe,
