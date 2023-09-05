@@ -9,11 +9,15 @@ class EditIngredient extends React.Component {
     this.state = {
       ingredientDetails: null,
       popUp: null,
-      ingredientList: []
+      filter: ""
     };
-    this.getAllIngredients();
-  }
 
+  }
+  editFilter = (e) => {
+    this.setState({
+      filter : e.target.value
+    });
+  }
   openPopUp = (targetIngredient) => {
     this.setState({
       popUp: <IngredientPopup closePopup={this.closePopup} ingredient={targetIngredient} />
@@ -26,28 +30,6 @@ class EditIngredient extends React.Component {
     });
   };
 
-  getAllIngredients() {
-    const localPath = 'http://localhost:3001/';
-    fetch(`${localPath}getallingredients/`)
-      .then(response => response.json())
-      .then(data => {     
-        this.setState({
-          ingredientList: data.result
-        });
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }
-  deleteIngredient = (ingrID) => {
-
-  }
-  addIngrdient = (ingrID) =>{
-
-  }
-  filter = (prefix) => {
-
-  }
   render() {
     return (
       <div className="edit_ingredient">
@@ -55,13 +37,14 @@ class EditIngredient extends React.Component {
         <div className='horizontal_container' id="edit_ingredient_header">
           <button onClick={() => this.openPopUp(null)}> Add Ingredient</button>
           <label> Search </label>
-          <input type = "text"></input>
+          <input type = "text" value ={this.state.filter} onChange={this.editFilter}></input>
         </div>
         <div className='ingredient_container'>
-          {this.state.ingredientList.map((item, index) => (
-            <div className='ingredient_icon_container' key={index}>
+          {Info.getAllIngredients().map((item, index) => (
+            item.name.toLowerCase().startsWith(this.state.filter.toLowerCase()) ?
+            (<div className='ingredient_icon_container' key={index}>
               <IngredientIcon clickHandler={() => this.openPopUp(item)} ingredient={item} />
-            </div>
+            </div>): null
           ))}
         </div>
       </div>

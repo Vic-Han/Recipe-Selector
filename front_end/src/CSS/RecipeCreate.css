@@ -1,0 +1,44 @@
+@import './Global.css';
+
+.create_recipe_header{
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
+}
+.create_recipe_image{
+    width: 25vw;
+}
+.create_recipe_contents{
+    display: grid;
+    grid-template-columns: 30% 35% 35%;
+}
+.create_recipe_ingredient_list{
+    align-items: center;
+}
+.create_recipe_instruction_list{
+    align-items: center;
+}
+.add_button{
+    text-align: center;
+    font-size: 4vw;
+}
+.create_recipe_ingredient{
+    display:grid;
+    grid-template-columns: 30% 30% 30%;
+    gap: 5%;
+    margin-bottom: 5vh;;
+}
+.ingredient_preview_image{
+    width: 100%;
+    margin-right: 5vw;
+}
+.ingredient_select{
+    width:100%;
+
+}
+.select_component{
+    padding-top: 0;
+    margin-top: 0;
+    width:100%;
+    text-align: center;
+    font-size: 1.4vw;
+}

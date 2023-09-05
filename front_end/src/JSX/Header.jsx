@@ -27,7 +27,6 @@ class Header extends React.Component
         }
    
         Info.addObserver(this.update)
-        //this.update()
     }
     componentDidMount()
     {
@@ -42,7 +41,6 @@ class Header extends React.Component
     }
     update = () =>
     {
-        console.log(Info.getPermission())
         let new_favourites = "";
         let new_recipe = "";
         let new_ingredient = "";

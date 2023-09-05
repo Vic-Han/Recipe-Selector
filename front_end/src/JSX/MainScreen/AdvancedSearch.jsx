@@ -14,10 +14,10 @@ class AdvancedSearch extends React.Component {
     return (
     <div id = "advanced_search_container">
     <h1>Advanced Search: </h1>
-    <Filters filters = {this.filters} userID = {this.userID}/>
+     
     </div>
     );
   }
 }
-
+ //{<Filters filters = {this.filters} userID = {this.userID}/>}
 export default AdvancedSearch;

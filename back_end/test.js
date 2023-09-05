@@ -1,5 +1,6 @@
-const {Ingredient,getAllIngredients} = require('./ingredient')
+const {Recipe,computeNutrition} = require('./recipe')
 
-getAllIngredients().then(ingr => console.log(ingr))
-
-//Ingredient.findById('64b4b21f0e8559739a0c7980').then(ingr => {console.log(ingr)})
+//computeNutrition('64c6cf71969f5eed90a45150')
+//Recipe.findOne({}).then(i => console.log(i))
+const i = new   Recipe({name: "test"})
+i.save()

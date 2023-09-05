@@ -5,7 +5,7 @@ const userSchema = new mongoose.Schema({
   lastName: String,
   password: Number,
   email: String,
-  perimission: Number,
+  permission: Number,
   favorites: [mongoose.SchemaTypes.ObjectId],
   imagePath: String,
 });
@@ -14,7 +14,7 @@ const User = mongoose.model("User", userSchema);
 mongoose.connect('mongodb://127.0.0.1:27017/testdb');
 
 async function createUser(firstName,lastName, hashedPassword, email) {
-  const new_user = new User({ firstName,lastName, password: hashedPassword, email, perimission: 1, favorites: [],imagePath: "images/users/default.png" });
+  const new_user = new User({ firstName,lastName, password: hashedPassword, email, permission: 1, favorites: [],imagePath: "images/users/default.png" });
   try{
     await new_user.save(); 
     return new_user._id;
@@ -25,8 +25,8 @@ async function createUser(firstName,lastName, hashedPassword, email) {
 }
 
 async function verifyUser(inputemail, hashedPassword) {
-  const user = await User.exists({  email: inputemail , password: hashedPassword });
-  return (user !== null);
+  const user = await User.findOne({  email: inputemail , password: hashedPassword });
+  return (user !== null) ? user : false; 
 }
 async function checkUser(email) {
     const user = await User.exists({  email: email });
@@ -41,6 +41,16 @@ async function getImage(email){
   const user = await User.findOne({  email: email });
   return user.imagePath;
 }
+async function updateFav(userID, recipeID){
+  const user = await User.findById(userID)
+  if(user.favorites.includes(recipeID)){
+    user.favorites = user.favorites.filter(item => item !== recipeID)
+  }
+  else{
+    user.favorites.push(recipeID)
+  }
+  await user.save();
+}
 module.exports = {
     User,
     checkUser,
@@ -48,4 +58,5 @@ module.exports = {
     verifyUser,
     getPermission,
     getImage,
+    updateFav,
 }

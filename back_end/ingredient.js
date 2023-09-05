@@ -36,7 +36,7 @@ async function newIngredient(name, input_nutrition, flags){
     const ingredient = await  new Ingredient ({name, nutrition_facts : nutrition, flags, imagePath: "images/ingredients/default.png"})
     try{
         await ingredient.save(); 
-        return ingredient._id;
+        return ingredient;
         }
       catch(error){
         return false;

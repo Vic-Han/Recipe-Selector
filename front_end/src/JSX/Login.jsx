@@ -29,9 +29,9 @@ class Login extends React.Component {
     fetch(`${localPath}/logincorrect/${encodeURIComponent(this.state.email.trim())}/${encodeURIComponent(this.state.password.trim())}`)
       .then(response => response.json())
       .then(data => {
-        if (data.result === true) {
+        if (data.result !== false) {
           // Login success
-          Info.setEmail(this.state.email);
+          Info.setUser(data.result);
           
           this.loginSuccessEvent();
         } else {

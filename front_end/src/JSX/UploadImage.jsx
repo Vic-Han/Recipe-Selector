@@ -4,7 +4,7 @@ function UploadImage(props) {
   const [selectedImage, setSelectedImage] = useState(null);
   const fileInputRef = useRef(null);
   const saveEvent = props.saveEvent
-  const defaultImage = (props.image === null) 
+  const defaultImage = (props.image == null) 
   ? ("http://localhost:3001/images/general/default.png") : (props.image);
   const handleAreaClick = () => {
     fileInputRef.current.click();

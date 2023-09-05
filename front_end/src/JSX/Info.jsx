@@ -1,38 +1,65 @@
 class Info {
-    constructor() {
+      constructor() {
       this.userEmail = ""
       this.permission = 0
+      this.favorites = []
       this.observers = []
-      this.dietary_flags = ["vegan","gluten-free","dairy-free","peanut-free","vegetarian","halal"]
+      this.firstName = ""
+      this.lastName = ""
+      this.imagePath = ""
       this.userID = null;
+      this.dietary_flags = ["vegan","gluten-free","dairy-free","peanut-free","vegetarian","halal"]
       this.ingredientList = []
-
-
-      this.getAllIngredients()
+      this.recipeList = []
+      const localPath = 'http://localhost:3001/';
+      fetch(`${localPath}getallingredients/`)
+        .then(response => response.json())
+        .then(data => {     
+          this.ingredientList = data
+        })
+        .catch(error => {
+          console.log(error);
+        });
+      
+      fetch(`${localPath}getallrecipes/`)
+        .then(response => response.json())
+        .then(data => {     
+          this.recipeList = data
+        })
+        .catch(error => {
+          console.log(error);
+        });
+        //fetch(`${localPath}test`).then(res => console.log("fetched"))
     }
-  
+    resetUser(){
+      this.userEmail = ""
+      this.permission = 0
+      this.favorites = []
+      this.observers = []
+      this.firstName = ""
+      this.lastName = ""
+      this.imagePath = ""
+      this.userID = null
+    }
     getEmail() {
       return this.userEmail;
     }
-    setEmail(newEmail){
-      if(newEmail === ""){
-        this.userEmail = "";
-        this.setPermission(0)
+    setUser(user){
+      if(user.email === ""){
+        this.resetUser()
         return;
       }
-      this.userEmail = newEmail;
-      const localPath = 'http://localhost:3001';
-      fetch(`${localPath}/getpermission/${encodeURIComponent(newEmail)}`)
-      .then(response => response.json())
-      .then(data => {
-        this.setPermission(data.result);
-          
-
-        } 
-      )
-      .catch(error => {
-        console.log(error);
-      });
+      console.log(user, user.favorites)
+      this.userEmail = user.email;
+      this.setPermission(user.permission)
+      this.firstName = user.firstName;
+      this.lastName = user.lastName;
+      this.favourites = user.favorites;
+      this.imagePath = user.imagePath;
+      this.userID = user._id;
+    }
+    getImagePath(){
+      return this.imagePath;
     }
     getPermission()
     {
@@ -56,26 +83,27 @@ class Info {
       return this.dietary_flags
     }
     getAllIngredients() {
-      const localPath = 'http://localhost:3001/';
-      fetch(`${localPath}getallingredients/`)
-        .then(response => response.json())
-        .then(data => {     
-          this.ingredientList = data.result
-        })
-        .catch(error => {
-          console.log(error);
-        });
+      return this.ingredientList;
     }
     addIngredient(ingr){
       this.ingredientList.push(ingr)
     }
     removeIngredient(mongoID){
-      for(let i = 0; i < this.ingredientList.size(); i++){
+      for(let i = 0; i < this.ingredientList.length; i++){
         if (this.ingredientList[i]._id === mongoID ){
           this.ingredientList.splice(i, 1);
           return;
         }
       }
+    }
+    getAllRecipes(){
+      return this.recipeList;
+    }
+    getFavourites(){
+      return this.favorites;
+    }
+    getUserID(){
+      return this.userID
     }
   }
   

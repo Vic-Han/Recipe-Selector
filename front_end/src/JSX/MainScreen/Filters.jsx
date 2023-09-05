@@ -1,39 +1,50 @@
-import React from "react";
+import React, { useState } from "react";
 import '../../CSS/Filters.css'
-
-class Filters extends React.Component {
-    constructor(props) {
-      super(props);
-      this.state = {
-        preferences: props.filters,
-        userID : props.userID,
-      };
-     
-
+import Info from '../Info'
+function Filters (props) {
+  const saveFlags = props.saveFlags
+  const [flags,changeFlags] = useState(props.flags)
+  const handleCheckboxClick = (event) => {
+    const value = event.target.value;
+    if (event.target.checked){
+      const newFlags = [...flags,value]
+      saveFlags(newFlags)
+      changeFlags(newFlags)
     }
-  
-    handleCheckboxChange = (event) => {
-      const { name, checked } = event.target;
-      const { preferences } = this.state;
-      preferences[name] = checked;
-      this.setState({ preferences });
-    };
-    handleFavorites = (event) => {
-        const { name, checked } = event.target;
-        if(this.state.userID === -1){
+    else{
+      const newFlags = flags.filter(item => item !== value)
+      saveFlags(newFlags)
+      changeFlags(newFlags)
+    }
+    
+  };
 
-        }
-        else{
-            const { preferences } = this.state;
-            preferences[name] = checked;
-            this.setState({ preferences });
-        }
-    };
-    render() {
-      const { preferences } = this.state;
-  
-      return (
-        <div>
+   
+  return (
+    <div>
+      <div> 
+        {Info.flagArray().map((restriction) => (
+        <div key={restriction}>
+        <label>
+        {restriction}
+        </label>
+        <input
+          type="checkbox"
+          value={restriction}
+          checked={flags.includes(restriction)}
+          onChange={handleCheckboxClick}
+        ></input>
+                        
+        </div>
+        ))}
+      </div>
+    </div>
+  );
+  }
+
+export default Filters;
+
+/*<div>
             <div id = "favorites">
                 <label>
                 favorites:
@@ -59,9 +70,4 @@ class Filters extends React.Component {
             
             ))}
             </div>
-        </div>
-      );
-    }
-  }
-
-export default Filters;
+        </div>*/

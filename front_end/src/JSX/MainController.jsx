@@ -11,15 +11,13 @@ import EditIngredient from './EditIngredient.jsx';
 import EditRecipe from './EditRecipe.jsx';
 import Info from './Info.jsx'
 import UploadImage from './UploadImage';
-
+import RecipeView from './EditIngredient/RecipeView';
 class MainController extends React.Component {
     
   constructor() {
     super();
-    
-    this.filters = { "gluten-free": false, keto: false };
     this.state = {
-      mainContents: <MainScreen searchEvent={this.search} userID={this.userID} filters={this.filters} />,
+      mainContents: <MainScreen viewRecipeEvent = {this.viewRecipeEvent} />,
       
     };
     this.headerButtons = {
@@ -31,10 +29,11 @@ class MainController extends React.Component {
       profClick : this.showProfileScreen,
       loginClick : this.showLoginScreen,
     }
+   
   }
 
   componentDidMount() {}
-
+  
   showLoginScreen = () => {
     this.setState({
       mainContents: <Login loginSuccessEvent={this.showHomeScreen} registerEvent={this.showRegisterScreen} />,
@@ -43,7 +42,7 @@ class MainController extends React.Component {
 
   showHomeScreen = ()  => {
     this.setState({
-      mainContents: <MainScreen searchEvent={this.search}  filters={this.filters} />,
+      mainContents: <MainScreen viewRecipeEvent = {this.viewRecipeEvent} />,
     });
 
   }
@@ -78,9 +77,12 @@ class MainController extends React.Component {
       mainContents : <EditRecipe/>
     })
   }
-  search(recipe_name) {
-
+  viewRecipeEvent = (recipe) =>{
+    this.setState({
+      mainContents:  (<RecipeView recipe={recipe} backEvent = {this.showHomeScreen}/>),
+    })
   }
+
 
   render() {
     

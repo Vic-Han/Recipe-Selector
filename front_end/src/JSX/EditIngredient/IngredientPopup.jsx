@@ -25,6 +25,7 @@ function IngredientPopup(props)
     }
     const deleteIngredient = () =>{       
         fetch(`${localPath}deleteingredient/${encodeURIComponent(id)}`)
+        Info.removeIngredient(id)
     }
     const saveIngredient = async() =>{
         const nutrition_facts = 
@@ -76,7 +77,7 @@ function IngredientPopup(props)
     
         const response = await fetch(`${localPath}newingredient?${queryParams}`)
         const result = await response.json()
-        id = result;
+        id = result._id;
         if(imageFile !== null){
             const formData = new FormData();
             formData.append('image', imageFile);

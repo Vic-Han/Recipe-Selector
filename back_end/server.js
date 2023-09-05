@@ -7,9 +7,9 @@ app.use(express.json());
 app.use(cors());
 
 const multer = require('multer');
-const { User, checkUser, createUser, verifyUser, getPermission,getImage } = require('./user');
+const { User, checkUser, createUser, verifyUser, getPermission,getImage,updateFav } = require('./user');
 const { getAllIngredients, newIngredient,editIngredient, deleteIngredient, Ingredient} = require('./ingredient');
-const {Recipe,} = require('./recipe')
+const {Recipe, getAllRecipes,} = require('./recipe')
 app.use(express.static(__dirname + '/public'))
 // Multer configuration
 let userImageName = null;
@@ -98,7 +98,7 @@ app.post('/uploadrecipeimage', uploadrecipeimage.single('image'), (req, res) => 
 });
 
 const crypto = require('crypto');
-const { newRecipe } = require('./recipe');
+const { newRecipe,computeNutrition } = require('./recipe');
 
 function hashStringToInt(string) {
   // Create a hash object
@@ -115,7 +115,12 @@ function hashStringToInt(string) {
 
   return hashInt;
 }
-
+app.get('/test/', (req, res) => {
+  computeNutrition('64c6cf71969f5eed90a45150')
+    
+  res.json( "result" );
+  
+});
 app.get('/createuser/:email/:password/:firstName/:lastName', (req,res) =>{
     const hashedPassword = hashStringToInt(req.params.password.trim());
     createUser(req.params.firstName.trim(),req.params.lastName.trim(), hashedPassword, req.params.email.trim()).then(result => {
@@ -159,7 +164,7 @@ app.get('/getimagepath/:email',(req,res) => {
 app.get('/getallingredients/', (req, res) => {
   getAllIngredients()
     .then((result) => {
-      res.json({ result });
+      res.json( result );
     })
     .catch((error) => {
       res.json({ error });
@@ -181,7 +186,21 @@ app.get('/deleteingredient/:mongoID', (req,res) =>{
 })
 
 app.get('/newrecipe',(req,res) => {
+
   newRecipe(req.query.name, JSON.parse(req.query.ingredients), JSON.parse(req.query.instructions))
+  .then(result => {
+    res.json(result)
+  }).catch(error =>{res.json(error)})
+})
+app.get('/getallrecipes',(req,res) => {
+
+  getAllRecipes()
+  .then(result => {
+    res.json(result)
+  }).catch(error =>{res.json(error)})
+})
+app.get('/updatefavorite/userID/recipeID',(req,res) =>{
+  updateFav(req.params.userID,req.params.recipeID).then(result => {res.json(true)})
 })
 // Start the server
 app.listen(3001, () => {

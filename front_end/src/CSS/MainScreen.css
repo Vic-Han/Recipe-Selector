@@ -1,1 +1,40 @@
-@import './Global.css'
+@import './Global.css';
+
+
+#main_screen_container{
+    margin-top: 1vh;
+    display:grid;
+    grid-template-columns: 34% 64%;
+}
+.basic_search{
+    display:grid;
+    grid-template-columns: 35% 60%;
+}
+.advanced_search_buttons{
+    display: grid;
+    height: 5vh;
+    grid-template-columns: 33% 33% 33%;
+}
+.advanced_search_button {
+    background-color: #dddddd;
+    border-width: 0.3vh;
+   
+    border-style: solid;
+    margin-left: 20%;
+    margin-bottom: 0;
+    z-index: 3;
+}
+
+.advanced_search_button.toggled{
+    border-color: black black white black;
+    background-color: #ffffff;
+}
+.advanced_search_display {
+    padding: 0.3vh;
+    border: solid ;
+    z-index: 1;
+    box-sizing: border-box; /* This ensures that padding is included in the width */
+    margin-top: -0.3vh;
+    height: 50vh;
+    overflow: auto;
+  }

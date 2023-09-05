@@ -1,0 +1,6 @@
+@import './Global.css';
+
+.ingredient_select{
+    height: 100%;
+    overflow-y: auto;
+}

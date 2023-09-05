@@ -1,0 +1,7 @@
+@import './Global.css';
+
+
+.recipe_list{
+    display:grid;
+    grid-template-columns: 40% 40%;
+}

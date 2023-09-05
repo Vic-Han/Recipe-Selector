@@ -1,7 +1,7 @@
 import React from "react";
 import '../../CSS/BasicGuideButton.css'
 
-class BasicGuideButton extends React.Component {
+class RecipeAI extends React.Component {
     constructor(props)
     {
         super()
@@ -16,4 +16,4 @@ class BasicGuideButton extends React.Component {
         );
     }
 }
-export default BasicGuideButton
+export default RecipeAI
