@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model("User", userSchema);
 mongoose.connect('mongodb://127.0.0.1:27017/testdb');
-
+const {Recipe} = require('./recipe.js')
 async function createUser(firstName,lastName, hashedPassword, email) {
   const new_user = new User({ firstName,lastName, password: hashedPassword, email, permission: 1, favorites: [],imagePath: "images/users/default.png" });
   try{
@@ -35,7 +35,7 @@ async function checkUser(email) {
 // called when front end knows user exists
 async function getPermission(email) {
     const user = await User.findOne({  email: email });
-    return user.perimission;
+    return user.permission;
 }
 async function getImage(email){
   const user = await User.findOne({  email: email });
@@ -51,6 +51,18 @@ async function updateFav(userID, recipeID){
   }
   await user.save();
 }
+async function getFavorites(userID){
+  const user = await User.findById(userID)
+  let recipes = [];
+  let promises = [];
+  user.favorites.forEach(favorite => {
+    promises.push(Recipe.findById(favorite).then(recipe => {
+      recipes.push(recipe)
+    }))
+  })
+  await Promise.all(promises);
+  return recipes;
+}
 module.exports = {
     User,
     checkUser,
@@ -59,4 +71,5 @@ module.exports = {
     getPermission,
     getImage,
     updateFav,
+    getFavorites,
 }

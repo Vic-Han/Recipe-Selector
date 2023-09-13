@@ -7,7 +7,7 @@ app.use(express.json());
 app.use(cors());
 
 const multer = require('multer');
-const { User, checkUser, createUser, verifyUser, getPermission,getImage,updateFav } = require('./user');
+const { User, checkUser, createUser, verifyUser, getPermission,getImage,updateFav,getFavorites } = require('./user');
 const { getAllIngredients, newIngredient,editIngredient, deleteIngredient, Ingredient} = require('./ingredient');
 const {Recipe, getAllRecipes,} = require('./recipe')
 app.use(express.static(__dirname + '/public'))
@@ -199,8 +199,11 @@ app.get('/getallrecipes',(req,res) => {
     res.json(result)
   }).catch(error =>{res.json(error)})
 })
-app.get('/updatefavorite/userID/recipeID',(req,res) =>{
+app.get('/updatefavorite/:userID/:recipeID',(req,res) => {
   updateFav(req.params.userID,req.params.recipeID).then(result => {res.json(true)})
+})
+app.get('/getfavorites/:userID',(req,res) => {
+  getFavorites(req.params.userID).then(result => res.json(result))
 })
 // Start the server
 app.listen(3001, () => {

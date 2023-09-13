@@ -11,8 +11,16 @@ class EditRecipeMainScreen extends React.Component{
        
         this.state = {
             filter : "",
-            recipeList : Info.getAllRecipes(),
+            recipeList : [],
         }
+    }
+    componentDidMount(){
+        Info.getAllRecipes().then( list => {
+            this.setState({
+                recipeList:list,
+            })
+        })
+    
     }
     render(){
         return(

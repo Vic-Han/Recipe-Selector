@@ -6,9 +6,19 @@
     display:grid;
     grid-template-columns: 34% 64%;
 }
-.basic_search{
+#right_view{
+    display: grid;
+    grid-template-columns: 45% 45%;
+    grid-gap: 2.5%;
+}
+#left_view{
+    position: relative;
+    top: 2vh;
+}
+.basic_search_main_screen{
     display:grid;
-    grid-template-columns: 35% 60%;
+    grid-template-columns: 25% 70%;
+    margin-bottom: 1vh;
 }
 .advanced_search_buttons{
     display: grid;

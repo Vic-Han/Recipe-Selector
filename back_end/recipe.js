@@ -45,14 +45,16 @@ async function makeIngrPair(mongoID, amount)
     }
 }
 async function newRecipe(name, ingredients, instructions){
-    console.log("Inside function")
     const ingredient_list = []
-    const ingredient_creation = ingredients.map((ingredient,index) => {
-        makeIngrPair(ingredient.id, ingredient.amount).then(result => { ingredient_list[index] = result})
-    })
-    await Promise.all(ingredient_creation)
+    for(let index = 0; index < ingredients.length; index++)
+    {
+        const pair = await makeIngrPair(ingredients[index].id, ingredients[index].amount)
+        ingredient_list[index] = pair
+    }
+    console.log(ingredient_list)
     const new_recipe = await new Recipe({name,ingredients: ingredient_list,instructions, imagePath: "images/recipes/default.png"});
     await new_recipe.save();
+    console.log(new_recipe);
     return new_recipe;
 }
 async function deleteRecipe(mongoID){

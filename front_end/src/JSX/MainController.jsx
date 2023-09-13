@@ -59,7 +59,14 @@ class MainController extends React.Component {
   }
   showFavourites = () => {
     this.setState({
-      mainContents : <Favourites/>
+      mainContents :
+      <Favourites 
+         viewRecipeEvent = {(recipe) => {
+          this.setState({
+            mainContents:  (<RecipeView recipe={recipe} backEvent = {this.showFavourites}/>),
+          })
+         }}
+      />
     })
   }
   showManageScreen = () => {

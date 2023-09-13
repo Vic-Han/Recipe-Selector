@@ -2,30 +2,66 @@
 
 .create_recipe_header{
     display: grid;
-    grid-template-columns: 25% 25% 25% 25%;
+    position: relative;
+    left: 30%;
+    width: 60%;
+    grid-template-columns: 33% 33% 33%;
+}
+.create_recipe_final_page{
+    width: 70vw;
 }
 .create_recipe_image{
-    width: 25vw;
+    position: relative;
+    left: 30%;
+    width: 40%;
 }
 .create_recipe_contents{
-    display: grid;
-    grid-template-columns: 30% 35% 35%;
+    height: 70vh;
+    width: 100%;
 }
 .create_recipe_ingredient_list{
+    display: grid;
+    grid-template-columns: 40% 45%;
+    grid-gap: 2.5%;
     align-items: center;
 }
 .create_recipe_instruction_list{
+    height: 70%;
+    overflow-y: auto;
     align-items: center;
 }
 .add_button{
     text-align: center;
     font-size: 4vw;
 }
-.create_recipe_ingredient{
-    display:grid;
-    grid-template-columns: 30% 30% 30%;
-    gap: 5%;
-    margin-bottom: 5vh;;
+.ingredient_option_list{
+    position: relative;
+    bottom: 0%;
+    display: grid;
+    grid-template-columns: 20% 20% 20% 20%;
+    gap: 2.5%;
+    height: 50%;
+    overflow-y: auto;
+}
+.ingr_option_filter{
+    position: relative;
+    left: 22%;
+    width: 54%;
+    margin-bottom: 6%;
+
+}
+.ingredient_option_text{
+    position: relative;
+    width: 55%;
+    left: 22.5%;
+    
+}
+.ingredient_option_container{
+    width: 100%;
+    height: 100%;
+    position: relative;
+    top: 0%;
+    align-items: center;
 }
 .ingredient_preview_image{
     width: 100%;
@@ -41,4 +77,65 @@
     width:100%;
     text-align: center;
     font-size: 1.4vw;
+}
+.submit_amount_button_conatiner{
+    display: grid;
+    grid-template-columns: 45% 45%;
+}
+.current_ingredient_item{
+    width: 40%;
+    display: grid;
+    grid-template-columns:  90% 10%;
+}
+.delete_ingredient_button{
+    border: 2px solid black;
+    transition-duration: 0.8s;
+}
+
+.delete_ingredient_button:hover{
+    background-color:#bf0f0f ;
+}
+.instruction_item{
+    position: relative;
+    left: 15%;
+    width: 70%;
+    margin-top: 2%;
+    display:grid;
+    grid-template-columns: 8% 65% 4% 4%;
+}
+.instruction_button{
+    border: 2px  white;
+    opacity: 0.0;
+    transition-duration: 0.3s;
+}
+.instruction_item:hover .instruction_button{
+    border: 2px solid black;
+    opacity: 1.0;
+}
+.recipe_name_input{
+    align-items: center;
+    width: 20%;
+    position: relative;
+    left: 40%;
+}
+.selected_ingr_image{
+    width: 40%;
+
+}
+.current_ingredient_list{
+    align-items: center;
+}
+.ingredient_list_text{
+    position: relative;
+    width: 55%;
+    left: 22.5%;
+    
+}
+.error_message{
+    opacity: 0.0;
+}
+
+.error_message.visible_error{
+    color:red;
+    opacity: 1.0;
 }

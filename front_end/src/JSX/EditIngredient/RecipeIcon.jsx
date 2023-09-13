@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import '../../CSS/ManageScreen.css'
 function RecipeIcon(props) {
     const clickHandler = props.clickHandler
+    
     const localPath = `http://localhost:3001/`
     const imagePath = props.recipe.imagePath;
     return(

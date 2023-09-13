@@ -1,1 +1,14 @@
 @import './Global.css';
+
+.favorite_recipe_list{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 40% 40%;
+    grid-gap: 2.5%;  
+}
+.filter_input{
+    width : 30%;
+    aspect-ratio: 12/1;
+    position: relative;
+    left: 35%;
+}

@@ -6,12 +6,12 @@ function RecipeView(props) {
     const localPath = `http://localhost:3001/`
     const imagePath = props.recipe.imagePath;
     const id = props.recipe._id
-    const [favourited, toggled_fav] = useState(Info.getFavourites().includes(id)) 
+    const [favourited, toggled_fav] = useState(Info.getFavoriteIDS().includes(id)) 
     const editMode = props.editMode
     const favoriteVisible = !(editMode || Info.getUserID() === null)
     let favoriteButtonEnable = true
     const updateFav = async() => {
-      await fetch(`${localPath}/updatefavorite/${encodeURIComponent(Info.getUserID())}/${encodeURIComponent(id)}`)
+      await fetch(`${localPath}updatefavorite/${encodeURIComponent(Info.getUserID())}/${encodeURIComponent(id)}`)
     }
     const favouriteClick = async () => {
         if (favoriteButtonEnable) {

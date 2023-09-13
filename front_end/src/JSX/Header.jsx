@@ -9,16 +9,83 @@ class Header extends React.Component
     constructor(props)
     {
         super(props)
-        this.logoClick = props.eventHandlers.logoClick;
-        this.favouritesClick = props.eventHandlers.favouritesClick;
-        this.recipeClick = props.eventHandlers.recipeClick;
-        this.ingredientClick = props.eventHandlers.ingredientClick;
-        this.manageClick = props.eventHandlers.manageClick;
-        this.profClick = props.eventHandlers.profClick;
-        this.loginClick = props.eventHandlers.loginClick;
+        this.buttonIDList = ["favorites","login","add_recipe","edit_ingredient","manage_users"]
+        this.logoClick = () => {
+            this.buttonIDList.forEach(id => {
+                const button = document.getElementById(id)
+                if(button != null){
+                    button.classList.remove("selected")
+                }
+            })
+            props.eventHandlers.logoClick()
+        };
+        this.favouritesClick = () => {
+            this.buttonIDList.forEach(id => {
+                const button = document.getElementById(id)
+                if(button != null){
+                    button.classList.remove("selected")
+                }
+            })
+            const button = document.getElementById("favorites")
+            button.classList.add("selected")
+            props.eventHandlers.favouritesClick();
+        }
+        this.recipeClick = () => {
+            this.buttonIDList.forEach(id => {
+                const button = document.getElementById(id)
+                if(button != null){
+                    button.classList.remove("selected")
+                }
+            })
+            const button = document.getElementById("add_recipe")
+            button.classList.add("selected")
+            props.eventHandlers.recipeClick();
+        }
+        this.ingredientClick = () => {
+            this.buttonIDList.forEach(id => {
+                const button = document.getElementById(id)
+                if(button != null){
+                    button.classList.remove("selected")
+                }
+            })
+            const button = document.getElementById("edit_ingredient")
+            button.classList.add("selected")
+            props.eventHandlers.ingredientClick();
+        }
+        this.manageClick = () => {
+            this.buttonIDList.forEach(id => {
+                const button = document.getElementById(id)
+                if(button != null){
+                    button.classList.remove("selected")
+                }
+            })
+            const button = document.getElementById("manage_users")
+            button.classList.add("selected")
+            props.eventHandlers.manageClick();
+        }
+        this.profClick = () => {
+            this.buttonIDList.forEach(id => {
+                const button = document.getElementById(id)
+                if(button != null){
+                    button.classList.remove("selected")
+                }
+            })
+            props.eventHandlers.profClick();
+        }
+        this.loginClick = () => {
+            this.buttonIDList.forEach(id => {
+                const button = document.getElementById(id)
+                if(button != null){
+                    button.classList.remove("selected")
+                }
+            })
+            const button = document.getElementById("login")
+            button.classList.add("selected")
+            props.eventHandlers.loginClick();
+        }
         this.state = {
             logo: <Logo clickHandler = {this.logoClick}/>,
-            favourites: ((Info.permission > 0) ? (<HeaderButton clickHandler = {this.favouritesClick} text = "Favourites"/>): null),
+            favourites: ((Info.permission > 0) ? (<HeaderButton ID = {"favorites"} clickHandler = {this.favouritesClick} text = "Favourites"/>): null),
             recipe: null,
             ingredient: null,
             manage: null,
@@ -32,7 +99,7 @@ class Header extends React.Component
     {
         this.setState({
             logo: <Logo clickHandler = {this.logoClick}/>,
-            prof_Icon : <HeaderButton clickHandler = {this.loginClick} text = "Login"/>,
+            prof_Icon : <HeaderButton ID = {"login"}clickHandler = {this.loginClick} text = "Login"/>,
             favourites: null,
             recipe: null,
             ingredient: null,
@@ -49,20 +116,20 @@ class Header extends React.Component
 
         if(Info.getPermission() >= 1)
         {
-            new_favourites = <HeaderButton clickHandler = {this.favouritesClick} text = "Favourites"/>
+            new_favourites = <HeaderButton ID = {"favorites"} clickHandler = {this.favouritesClick} text = "Favourites"/>
             new_prof_Icon = <ProfileIcon clickHandler = {this.profClick}/>
         }
         else{
-            new_prof_Icon = <HeaderButton clickHandler = {this.loginClick} text = "Login"/>
+            new_prof_Icon = <HeaderButton ID = {"login"} clickHandler = {this.loginClick} text = "Login"/>
         }
         if(Info.getPermission() >= 2)
         {
-            new_recipe = <HeaderButton clickHandler = {this.recipeClick} text = "Add Recipe"/>
+            new_recipe = <HeaderButton ID = {"add_recipe"} clickHandler = {this.recipeClick} text = "Add Recipe"/>
         }
         if(Info.getPermission() >= 3)
         {
-            new_ingredient = <HeaderButton clickHandler = {this.ingredientClick} text = "Edit Ingredients"/>
-            new_manage = <HeaderButton clickHandler = {this.manageClick} text = "Manage Users"/>
+            new_ingredient = <HeaderButton ID = {"edit_ingredient"} clickHandler = {this.ingredientClick} text = "Edit Ingredients"/>
+            new_manage = <HeaderButton ID = {"manage_users"} clickHandler = {this.manageClick} text = "Manage Users"/>
         }
         this.setState ( {
             logo: <Logo clickHandler = {this.logoClick}/>,

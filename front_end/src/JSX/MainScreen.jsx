@@ -16,13 +16,14 @@ class MainScreen extends React.Component{
         flags: [],
         targetIngredientList: [],
         avoidedIngredientList:[],
-        matchesSearchPrefix: new Array(Info.getAllRecipes().length).fill(true),
-        matchesAvoidedIngredients: new Array(Info.getAllRecipes().length).fill(true),
-        matchesTargetIngredients: new Array(Info.getAllRecipes().length).fill(true),
-        matchesFlags: new Array(Info.getAllRecipes().length).fill(true),
+        recipeList : [],
+        matchesSearchPrefix: [],
+        matchesAvoidedIngredients: [],
+        matchesTargetIngredients: [],
+        matchesFlags: [],
        }
        this.viewRecipeEvent = props.viewRecipeEvent
-    
+       this.recipeList = []
        this.flagList = Info.flagArray()
        
        this.flagToInt = {}
@@ -52,6 +53,16 @@ class MainScreen extends React.Component{
     }
     componentDidMount(){
         this.buttonToggle(0)
+        Info.getAllRecipes().then(list =>{
+            this.setState({
+                recipeList: list,
+                matchesSearchPrefix: Array.from({ length: list.length }, () => true),
+                matchesAvoidedIngredients: Array.from({ length: list.length }, () => true),
+                matchesTargetIngredients: Array.from({ length: list.length }, () => true),
+                matchesFlags: Array.from({ length: list.length }, () => true),
+            })
+
+        })
     }
     meets_criteria(recipe)
     {
@@ -182,7 +193,7 @@ class MainScreen extends React.Component{
     render()
     {
         return(
-        <div id = "main_screen_container" className='horizontal_container'>
+        <div id = "main_screen_container" className=''>
             <div id = "left_view"> 
                 <div className='basic_search_main_screen'>
                     <label> Search </label>
@@ -210,7 +221,7 @@ class MainScreen extends React.Component{
                 </div>
             </div>
             <div id = "right_view" className=''> 
-            {Info.getAllRecipes().map( (item, index)=> (
+            {this.state.recipeList.map( (item, index)=> (
                     this.state.matchesSearchPrefix[index] && this.state.matchesFlags[index]
                     && this.state.matchesTargetIngredients[index] && this.state.matchesAvoidedIngredients[index]?
                         (<div className='recipe_icon_container' >

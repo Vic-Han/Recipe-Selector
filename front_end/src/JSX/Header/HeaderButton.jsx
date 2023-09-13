@@ -5,7 +5,7 @@ function HeaderButton(props)
 {
     return(
         <div>
-            <h4 className = "header_button" onClick={props.clickHandler}> {props.text} </h4>
+            <h4 id= {props.ID} className = "header_button" onClick={props.clickHandler}> {props.text} </h4>
         </div>
     )
 }

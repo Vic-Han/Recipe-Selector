@@ -3,6 +3,7 @@ class Info {
       this.userEmail = ""
       this.permission = 0
       this.favorites = []
+      this.favorite_ids = []
       this.observers = []
       this.firstName = ""
       this.lastName = ""
@@ -12,7 +13,7 @@ class Info {
       this.ingredientList = []
       this.recipeList = []
       const localPath = 'http://localhost:3001/';
-      fetch(`${localPath}getallingredients/`)
+       fetch(`${localPath}getallingredients/`)
         .then(response => response.json())
         .then(data => {     
           this.ingredientList = data
@@ -21,20 +22,14 @@ class Info {
           console.log(error);
         });
       
-      fetch(`${localPath}getallrecipes/`)
-        .then(response => response.json())
-        .then(data => {     
-          this.recipeList = data
-        })
-        .catch(error => {
-          console.log(error);
-        });
+      
         //fetch(`${localPath}test`).then(res => console.log("fetched"))
     }
+    
     resetUser(){
       this.userEmail = ""
       this.permission = 0
-      this.favorites = []
+      this.favorite_ids = []
       this.observers = []
       this.firstName = ""
       this.lastName = ""
@@ -49,12 +44,11 @@ class Info {
         this.resetUser()
         return;
       }
-      console.log(user, user.favorites)
       this.userEmail = user.email;
       this.setPermission(user.permission)
       this.firstName = user.firstName;
       this.lastName = user.lastName;
-      this.favourites = user.favorites;
+      this.favorite_ids = user.favorites;
       this.imagePath = user.imagePath;
       this.userID = user._id;
     }
@@ -96,11 +90,40 @@ class Info {
         }
       }
     }
-    getAllRecipes(){
+    addRecipe(recipe){
+      this.recipeList.push(recipe)
+    }
+    async getAllRecipes() {
+      if (this.recipeList.length === 0) { // Corrected condition
+        const localPath = 'http://localhost:3001/';
+        try {
+          const response = await fetch(`${localPath}getallrecipes/`);
+          const data = await response.json();
+          this.recipeList = data;
+          return this.recipeList;
+        } catch (error) {
+          console.log(error);
+        }
+      }
       return this.recipeList;
     }
-    getFavourites(){
+    
+    async getFavorites(){
+      if(this.favorites.length === 0){
+        const localPath = 'http://localhost:3001/';
+        try {
+          const response = await fetch(`${localPath}getfavorites/${encodeURIComponent(this.userID)}`);
+          const data = await response.json();
+          this.favorites = data;
+          return this.favorites;
+        } catch (error) {
+          console.log(error);
+        }
+      }
       return this.favorites;
+    }
+    getFavoriteIDS(){
+      return this.favorite_ids;
     }
     getUserID(){
       return this.userID
