@@ -1,10 +1,20 @@
 @import './Global.css';
 
-.header_button{
-    font-weight: normal;
+
+.header_button_container{
+    display: grid;
+    grid-template-columns: 30% 65%;
+    grid-gap: 1.5%;
     cursor: pointer;
 }
+.header_button_text{
+    font-weight: normal;
+}
 
-.header_button.selected{
+.header_button_text.selected{
     color:#03a9f4 !important ;
+}
+.header_icon{
+    width: 100%;
+    aspect-ratio: 1/1;
 }

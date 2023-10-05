@@ -59,8 +59,8 @@ class Login extends React.Component {
   render() {
     return (
       <div id="login_contents">
-        <h2>Username or Email:</h2>
-        <h3 >{this.state.errorMessage}</h3>
+        <h2>Email:</h2>
+        <h3>{this.state.errorMessage}</h3>
         <input type="text" maxLength={50} value={this.state.email} onChange={this.handleEmailChange} id="userNameFeild" />
         <h2>Password:</h2>
         <input type="password" maxLength={50} value={this.state.password} onChange={this.handlePasswordChange} />

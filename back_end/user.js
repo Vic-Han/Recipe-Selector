@@ -1,18 +1,7 @@
 const mongoose = require("mongoose");
 
-const userSchema = new mongoose.Schema({
-  firstName: String,
-  lastName: String,
-  password: Number,
-  email: String,
-  permission: Number,
-  favorites: [mongoose.SchemaTypes.ObjectId],
-  imagePath: String,
-});
-
-const User = mongoose.model("User", userSchema);
 mongoose.connect('mongodb://127.0.0.1:27017/testdb');
-const {Recipe} = require('./recipe.js')
+const {Recipe, UserSchema, User} = require('./schemas.js')
 async function createUser(firstName,lastName, hashedPassword, email) {
   const new_user = new User({ firstName,lastName, password: hashedPassword, email, permission: 1, favorites: [],imagePath: "images/users/default.png" });
   try{
@@ -43,12 +32,20 @@ async function getImage(email){
 }
 async function updateFav(userID, recipeID){
   const user = await User.findById(userID)
+  const recipe = await Recipe.findById(recipeID)
   if(user.favorites.includes(recipeID)){
-    user.favorites = user.favorites.filter(item => item !== recipeID)
+    //const newFav = user.favorites.filter(item => item !== recipeID)
+    //user.favorites = newFav;
+    
+
+    user.favorites.splice(user.favorites.indexOf(recipeID),1)
+    recipe.numberFavorites = recipe.numberFavorites - 1;
   }
   else{
+    recipe.numberFavorites = recipe.numberFavorites + 1;
     user.favorites.push(recipeID)
   }
+  await recipe.save();
   await user.save();
 }
 async function getFavorites(userID){

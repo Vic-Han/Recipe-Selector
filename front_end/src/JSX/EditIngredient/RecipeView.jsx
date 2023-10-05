@@ -45,8 +45,9 @@ function RecipeView(props) {
         createIngr(ingr)
     )))
     const instrContent = (props.recipe.instructions.map((instr, index) =>(
-        <div>{(index+1) + ".   " + instr}</div>
+        <div className='instruction_text'>{(index+1) + ".   " + instr}</div>
     )))
+    const nutrition_content = (null);
     const [textContent, changeTextContent] = useState(ingrContent)
     const getInstructions = () => {
         
@@ -56,28 +57,32 @@ function RecipeView(props) {
     const getIngredients = () => {
         changeTextContent(ingrContent)
     }
+    const getNutrition = () => {
+
+    }
     return(
         <div className='recipe_view_container'>
             <div className='recipe_main_preview'>
                 <img className = "ingredient_image" src = {localPath + imagePath}></img> 
-                <h4 align = "center"> {props.recipe.name} </h4>
+                <h2 align = "center"> {props.recipe.name} </h2>
             </div>
             <div>
                 <div className= 'recipe_button_container'>
-                    <h4 onClick={getIngredients} align = "center"> Ingredients </h4>
-                    <h4 onClick={getInstructions} align = "center"> Instructions </h4>
-                    <h4></h4>
+                    <h2 onClick={getIngredients} className='recipe_button'> Ingredients </h2>
+                    <h2 onClick={getInstructions} className = "recipe_button"> Instructions </h2>
+                    <h2 onClick={getNutrition} className = "recipe_button"> Nutrition Facts </h2>
                 </div>
                 <div className='recipe_text_content'>
                     {textContent}
                 </div>
             </div>
-            <div onClick={backEvent}> back</div>
+            <div className = "recipe_view_back_button" onClick={backEvent}> back</div>
+            <div>
             {favoriteVisible ? <div className='star_container'>
             <div className={`favourite_star ${favourited ? ' highlighted':''}`} onClick={favouriteClick}></div>
             </div> : null}
             
-           
+           jjgjhgh</div>
         </div>
     )
     

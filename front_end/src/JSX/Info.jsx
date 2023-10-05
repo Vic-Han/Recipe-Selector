@@ -25,10 +25,19 @@ class Info {
       
         //fetch(`${localPath}test`).then(res => console.log("fetched"))
     }
-    
+    getUserInfo() {
+      return(
+        {
+          email: this.userEmail,
+          firstName: this.firstName,
+          lastName: this.lastName,
+          imagePath: this.imagePath
+        }
+      )
+    }
     resetUser(){
       this.userEmail = ""
-      this.permission = 0
+      this.setPermission(0)
       this.favorite_ids = []
       this.observers = []
       this.firstName = ""
@@ -40,10 +49,6 @@ class Info {
       return this.userEmail;
     }
     setUser(user){
-      if(user.email === ""){
-        this.resetUser()
-        return;
-      }
       this.userEmail = user.email;
       this.setPermission(user.permission)
       this.firstName = user.firstName;
@@ -93,6 +98,14 @@ class Info {
     addRecipe(recipe){
       this.recipeList.push(recipe)
     }
+    removeRecipe(recipeID){
+      for(let i = 0; i < this.recipeList.length; i++){
+        if (this.recipeList[i]._id === recipeID ){
+          this.recipeList.splice(i, 1);
+          return;
+        }
+      }
+    }
     async getAllRecipes() {
       if (this.recipeList.length === 0) { // Corrected condition
         const localPath = 'http://localhost:3001/';
@@ -107,7 +120,19 @@ class Info {
       }
       return this.recipeList;
     }
-    
+    addFavorite(recipe){
+      this.favorite_ids.push(recipe._id)
+      this.favorites.push(recipe)
+    }
+    removeFavorite(recipeID){
+      this.favorite_ids.splice(this.favorite_ids.indexOf(recipeID),1)
+      for(let i = 0; i < this.favorites.length; i++){
+        if (this.favorites[i]._id === recipeID ){
+          this.favorites.splice(i, 1);
+          return;
+        }
+      }
+    }
     async getFavorites(){
       if(this.favorites.length === 0){
         const localPath = 'http://localhost:3001/';

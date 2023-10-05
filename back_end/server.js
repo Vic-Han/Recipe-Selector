@@ -187,7 +187,7 @@ app.get('/deleteingredient/:mongoID', (req,res) =>{
 
 app.get('/newrecipe',(req,res) => {
 
-  newRecipe(req.query.name, JSON.parse(req.query.ingredients), JSON.parse(req.query.instructions))
+  newRecipe(req.query.name, JSON.parse(req.query.ingredients), JSON.parse(req.query.instructions),JSON.parse(req.query.userID))
   .then(result => {
     res.json(result)
   }).catch(error =>{res.json(error)})

@@ -5,10 +5,8 @@ import IngredientIcon from "../EditIngredient/IngredientIcon";
 function IngredientSelect(props){
     const ingredientList = Info.getAllIngredients()
     const editIngredients = props.editIngredients
-    const [targetIngr, changeTarget] = useState(props.targetIngredientList === [] ? [] : [...props.targetIngredientList])
-    const [avoidIngr, changeAvoid] = useState(props.avoidedIngredientList === [] ? [] : [...props.avoidedIngredientList])
-    const [addTargetIngr, changeTargetIngr] = useState(false)
-    const [addAvoidIngr, changeAvoidIngr] = useState(false)
+    const [targetIngr, changeTarget] = useState([...props.targetIngredientList])
+    const [avoidIngr, changeAvoid] = useState([...props.avoidedIngredientList])
     const [targetPrefix, setTargetPrefix] = useState("")
     const [avoidPrefix, setAvoidPrefix] = useState("")
     const [availibleIngredients, setAvailibleIngredients] = useState(ingredientList.filter( ingr =>(
@@ -30,19 +28,14 @@ function IngredientSelect(props){
             document.removeEventListener('click', clickHandler)
         }
     },[])
-    const doubleToggleCheck = () => {
-        if (addTargetIngr || addAvoidIngr) {
-            changeTargetIngr(false);
-            changeAvoidIngr(false);
-        }
-    };
+
     const addTarget = (ingr) => {
         const newAvailibleIngredients = availibleIngredients.filter(item => ingr !== item)
         setAvailibleIngredients(newAvailibleIngredients);
         const newTargetList = [...targetIngr, ingr]
         changeTarget(newTargetList)
         setTargetPrefix('')
-        editIngredients(ingr,'+','target')
+        editIngredients('+',ingr,'target')
 
     }
     const removeTarget = (ingr) => {
@@ -50,7 +43,7 @@ function IngredientSelect(props){
         changeTarget(newTargetList);
         const newAvailibleIngredients = [...availibleIngredients, ingr]
         setAvailibleIngredients(newAvailibleIngredients)
-        editIngredients(ingr,'-','target')
+        editIngredients('-',ingr,'target')
     }
     const addAvoid = (ingr) => {
         const newAvailibleIngredients = availibleIngredients.filter(item => ingr !== item)
@@ -58,31 +51,31 @@ function IngredientSelect(props){
         const newAvoidList = [...avoidIngr, ingr]
         changeAvoid(newAvoidList)
         setAvoidPrefix('')
-        editIngredients(ingr,'+','avoid')
+        editIngredients('+',ingr,'avoid')
     }
     const removeAvoid = (ingr) => {
         const newAvoidList = avoidIngr.filter(item => ingr !== item)
         changeAvoid(newAvoidList);
         const newAvailibleIngredients = [...availibleIngredients, ingr]
         setAvailibleIngredients(newAvailibleIngredients)
-        editIngredients(ingr,'-','avoid')
+        editIngredients('-',ingr,'avoid')
     }
         return(
-            <div onBlur = {doubleToggleCheck} className="ingredient_select">
+            <div className="ingredient_select">
                 <div className= "ingredient_select_list" id = "target_list">
                     <h2> Must Include: </h2>
                     <input type = "text" value = {targetPrefix} onChange={e => {setTargetPrefix(e.target.value)}}/>
                     <div className="ingredient_select_options">
-                    {   targetPrefix.length > 0 ? (availibleIngredients.map(ingr => ( ingr.name.toLowerCase().includes(targetPrefix.toLowerCase())?
-                        <div>
+                    {   targetPrefix.length > 0 ? (availibleIngredients.map((ingr,index) => ( ingr.name.toLowerCase().includes(targetPrefix.toLowerCase())?
+                        <div key = {"target_option" + index}>
                             <IngredientIcon clickHandler = {()=>{addTarget(ingr)}} ingredient = {ingr}/>
                         </div>: null
                     ))) : null
 
                     }</div>
                     <div>
-                        {targetIngr.map(ingr =>(
-                            <div>
+                        {targetIngr.map((ingr,index) =>(
+                            <div key = {"Target" + index}>
                                 {ingr.name} <span className = "remove_button" onClick={()=>{removeTarget(ingr)}}> - </span>
                             </div>
                         ))}
@@ -92,16 +85,16 @@ function IngredientSelect(props){
                     <h2> Must Avoid: </h2>
                     <input type = "text" value = {avoidPrefix} onChange={e => {setAvoidPrefix(e.target.value)}}/>
                     <div className="ingredient_select_options">
-                    {   avoidPrefix.length > 0 ? (availibleIngredients.map(ingr => ( ingr.name.toLowerCase().includes(avoidPrefix.toLowerCase())?
-                        <div>
+                    {   avoidPrefix.length > 0 ? (availibleIngredients.map((ingr,index) => ( ingr.name.toLowerCase().includes(avoidPrefix.toLowerCase())?
+                        <div key = {"avoid_option" + index}>
                             <IngredientIcon clickHandler = {()=>{addAvoid(ingr)}} ingredient = {ingr}/>
                         </div>: null
                     ))) : null
 
                     }</div>
                     <div>
-                        {avoidIngr.map(ingr =>(
-                            <div>
+                        {avoidIngr.map((ingr,index) =>(
+                            <div key = {"Target" + index}>
                                 {ingr.name} <span className = "remove_button" onClick={() => {removeAvoid(ingr)}}> - </span>
                             </div>
                         ))}

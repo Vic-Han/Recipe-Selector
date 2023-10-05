@@ -1,24 +1,7 @@
 const mongoose = require("mongoose");
-const {Ingredient,IngredientSchema,Nutrition,NutritionSchema} = require('./ingredient')
-const IngrPairSchema = new mongoose.Schema({
-    ingr: mongoose.SchemaTypes.ObjectId,
-    name: String,
-    weight: Number,
-    volume: Number,
-    serving: Number,
-    nutrition: NutritionSchema,
-})
-const RecipeSchema = new mongoose.Schema({
-    name: String,
-    ingredients: [IngrPairSchema],
-    instructions: [String],
-    nutrition_facts: NutritionSchema,
-    flags: [String],
-    imagePath : String
-})
+const {User, RecipeSchema, Recipe,Ingredient,IngredientSchema,Nutrition,NutritionSchema,IngrPairSchema,IngrPair} = require('./schemas.js')
 
-const IngrPair = mongoose.model("IngrPair", IngrPairSchema)
-const Recipe = mongoose.model("Recipe" , RecipeSchema);
+
 async function makeIngrPair(mongoID, amount)
 {
     const i = await Ingredient.findById(mongoID)
@@ -44,7 +27,8 @@ async function makeIngrPair(mongoID, amount)
        return instance
     }
 }
-async function newRecipe(name, ingredients, instructions){
+async function newRecipe(name, ingredients, instructions, userID){
+    const user = await User.findById(userID)
     const ingredient_list = []
     for(let index = 0; index < ingredients.length; index++)
     {
@@ -52,9 +36,18 @@ async function newRecipe(name, ingredients, instructions){
         ingredient_list[index] = pair
     }
     console.log(ingredient_list)
-    const new_recipe = await new Recipe({name,ingredients: ingredient_list,instructions, imagePath: "images/recipes/default.png"});
+    const new_recipe = await new Recipe(
+        {
+            name,
+            ingredients: ingredient_list,
+            instructions, 
+            imagePath: "images/recipes/default.png",
+            authorName: user.firstName + ' ' + user.lastName,
+            authorID: userID,
+            numberFavorites: 0,
+        });
     await new_recipe.save();
-    console.log(new_recipe);
+    await computeNutrition(new_recipe)
     return new_recipe;
 }
 async function deleteRecipe(mongoID){
@@ -108,7 +101,8 @@ async function computeNutrition(mongoID){
     }
 
    recipe.nutrition_facts = recipe_nutrition;
-   recipe.save();
+   await recipe.save();
+   return;
     //console.log(recipe,recipe_nutrition)
 }
 

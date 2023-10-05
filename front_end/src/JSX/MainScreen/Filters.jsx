@@ -8,12 +8,12 @@ function Filters (props) {
     const value = event.target.value;
     if (event.target.checked){
       const newFlags = [...flags,value]
-      saveFlags(newFlags)
+      saveFlags('+',value)
       changeFlags(newFlags)
     }
     else{
       const newFlags = flags.filter(item => item !== value)
-      saveFlags(newFlags)
+      saveFlags('-',value)
       changeFlags(newFlags)
     }
     

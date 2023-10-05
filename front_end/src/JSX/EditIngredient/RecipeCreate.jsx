@@ -139,7 +139,8 @@ function RecipeCreate(props)
         const params = {
             name: encodeURIComponent(recipeName),
             instructions: encodeURIComponent(JSON.stringify(instructionList)),
-            ingredients:encodeURIComponent(JSON.stringify(finalIngredientList)),
+            ingredients: encodeURIComponent(JSON.stringify(finalIngredientList)),
+            userID: encodeURIComponent(Info.getUserID())
         }
         const queryParams = Object.entries(params)
         .map(([key, value]) => `${key}=${value}`)
@@ -156,18 +157,9 @@ function RecipeCreate(props)
             formData.append('id', id)
             await axios.post(localPath+'uploadrecipeimage', formData)
         }
-    }
-    const cancelEvent = () => {
         backEvent();
     }
-    
-    const setIngredient = (index, value) =>{
 
-        const newIngrList = [...ingredientList];
-        newIngrList[index].ingredient = value;
-        newIngrList[index].imagePath = localPath + nametoKey[value];
-        editIngredientList(newIngrList)
-    }
     const removeIngredient = (index) =>{
         const newIngrArray = [...ingredientList];
         const newIngrOptions = [...ingredientOptions,ingredientList[index].ingredient]

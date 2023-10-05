@@ -83,9 +83,39 @@ class Header extends React.Component
             button.classList.add("selected")
             props.eventHandlers.loginClick();
         }
+        this.favouritesData ={
+            ID: "favorites",
+            imagePath: "images/general/starIcon.png",
+            text: "Favourites",
+            clickHandler: this.favouritesClick
+        }
+        this.addRecipeData ={
+            ID: "add_recipe",
+            imagePath: "images/general/panIcon.png",
+            text: "Add Recipe",
+            clickHandler: this.recipeClick
+        }
+        this.editIngredientData = {
+            ID: "edit_ingredient",
+            imagePath: "images/general/editPenIcon.png",
+            text: "Edit Ingredients",
+            clickHandler: this.ingredientClick
+        }
+        this.manageUserData = {
+            ID: "manage_users",
+            imagePath: "images/general/adminIcon.png",
+            text: "Manage Users",
+            clickHandler: this.manageClick
+        }
+        this.loginData = {
+            ID: "login",
+            imagePath: "images/general/loginIcon.png",
+            text: "Login",
+            clickHandler: this.loginClick
+        }
         this.state = {
             logo: <Logo clickHandler = {this.logoClick}/>,
-            favourites: ((Info.permission > 0) ? (<HeaderButton ID = {"favorites"} clickHandler = {this.favouritesClick} text = "Favourites"/>): null),
+            favourites: ((Info.permission > 0) ? (<HeaderButton data = {this.favouritesData}/>): null),
             recipe: null,
             ingredient: null,
             manage: null,
@@ -99,7 +129,7 @@ class Header extends React.Component
     {
         this.setState({
             logo: <Logo clickHandler = {this.logoClick}/>,
-            prof_Icon : <HeaderButton ID = {"login"}clickHandler = {this.loginClick} text = "Login"/>,
+            prof_Icon : <HeaderButton data = {this.loginData}/>,
             favourites: null,
             recipe: null,
             ingredient: null,
@@ -116,20 +146,20 @@ class Header extends React.Component
 
         if(Info.getPermission() >= 1)
         {
-            new_favourites = <HeaderButton ID = {"favorites"} clickHandler = {this.favouritesClick} text = "Favourites"/>
+            new_favourites = <HeaderButton data= {this.favouritesData}/>
             new_prof_Icon = <ProfileIcon clickHandler = {this.profClick}/>
         }
         else{
-            new_prof_Icon = <HeaderButton ID = {"login"} clickHandler = {this.loginClick} text = "Login"/>
+            new_prof_Icon = <HeaderButton data = {this.loginData}/>
         }
         if(Info.getPermission() >= 2)
         {
-            new_recipe = <HeaderButton ID = {"add_recipe"} clickHandler = {this.recipeClick} text = "Add Recipe"/>
+            new_recipe = <HeaderButton data = {this.addRecipeData}/>
         }
         if(Info.getPermission() >= 3)
         {
-            new_ingredient = <HeaderButton ID = {"edit_ingredient"} clickHandler = {this.ingredientClick} text = "Edit Ingredients"/>
-            new_manage = <HeaderButton ID = {"manage_users"} clickHandler = {this.manageClick} text = "Manage Users"/>
+            new_ingredient = <HeaderButton data= {this.editIngredientData}/>
+            new_manage = <HeaderButton data = {this.manageUserData}/>
         }
         this.setState ( {
             logo: <Logo clickHandler = {this.logoClick}/>,
